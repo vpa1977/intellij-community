@@ -138,14 +138,7 @@ def _iter_cache_files(cache_path: str):
             with os.scandir(current) as it:
                 for entry in it:
                     try:
-                        if entry.is_symlink():
-                            # Symlink to a directory: descend into it.
-                            if entry.is_dir(follow_symlinks=True):
-                                stack.append(entry.path)
-                            else:
-                                # Symlink to a file: treat as a cache file.
-                                yield entry.path
-                        elif entry.is_dir(follow_symlinks=False):
+                        if entry.is_dir(follow_symlinks=False):
                             stack.append(entry.path)
                         elif entry.is_file(follow_symlinks=False):
                             yield entry.path
