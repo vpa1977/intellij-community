@@ -125,6 +125,8 @@ def _iter_cache_files(cache_path: str):
     stack = [cache_path]
     while stack:
         current = stack.pop()
+        if current == cache_path + "/_main":
+            continue
         try:
             st = os.stat(current)
             key = (st.st_dev, st.st_ino)
@@ -138,9 +140,9 @@ def _iter_cache_files(cache_path: str):
             with os.scandir(current) as it:
                 for entry in it:
                     try:
-                        if entry.is_dir(follow_symlinks=False):
+                        if entry.is_dir(follow_symlinks=True):
                             stack.append(entry.path)
-                        elif entry.is_file(follow_symlinks=False):
+                        elif entry.is_file(follow_symlinks=True):
                             yield entry.path
                     except OSError:
                         continue
@@ -156,7 +158,10 @@ def audit(cache_path: str):
     binaries = []
     for path in _iter_cache_files(cache_path):
         name = os.path.basename(path)
+        if name == "_main":
+            continue
         rel_path = os.path.relpath(path, start=cache_path)
+        print(f"Processing {rel_path}", file=sys.stderr);
 
         if is_elf(path):
             binaries.append(rel_path)
