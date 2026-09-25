@@ -499,6 +499,6 @@ def _kotlin_test_deps_impl(repository_ctx):
         "package(default_visibility = ['//visibility:public'])\n" +
         "exports_files([" + ", ".join(["'" + f.name + "'" for f in _files]) + "])\n",
     )
-    return repository_ctx.repo_metadata(reproducible = not is_snapshot)
+    return None
 
 kotlin_test_deps = repository_rule(implementation = _kotlin_test_deps_impl)

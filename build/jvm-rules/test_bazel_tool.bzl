@@ -68,7 +68,8 @@ alias(
     visibility = ["//visibility:public"],
 )
 """.format(filename = filename))
-    return ctx.repo_metadata(reproducible = True)
+    if hasattr(ctx, "repo_metadata"):
+        return ctx.repo_metadata(reproducible = True)
 
 _repo = repository_rule(
     implementation = _repo_impl,

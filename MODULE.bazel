@@ -6,9 +6,8 @@ bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "rules_kotlin", version = "2.2.2")
 archive_override(
     module_name = "rules_kotlin",
-    sha256 = "5c9b4664b3f926624a405f1d39ce74bcfc0a46b319df4f20d2ee63bdfed9c43e",
     strip_prefix = "rules_kotlin-ffbc4307c3a55f61e05c12481b6dcb929d6e2b1f",
-    url = "https://github.com/JetBrains/rules_kotlin/archive/ffbc4307c3a55f61e05c12481b6dcb929d6e2b1f.zip",
+    urls = "https://github.com/JetBrains/rules_kotlin/archive/ffbc4307c3a55f61e05c12481b6dcb929d6e2b1f.zip",
 )
 
 bazel_dep(name = "rules_java", version = "9.6.1")
@@ -43,14 +42,6 @@ single_version_override(
     version = "0.7.1",
 )
 
-single_version_override(
-    module_name = "bazel_worker_java",
-    patches = [
-        "//:build/jvm-rules/worker-java-0.0.9-pin-bazel-worker-maven.patch",
-    ],
-    version = "0.0.10",
-)
-
 bazel_dep(name = "xml.bzl", version = "0.2.3")
 bazel_dep(name = "lib")
 local_path_override(
@@ -70,12 +61,12 @@ local_path_override(
 )
 
 bazel_dep(name = "windows_support", version = "0.1.7")
-bazel_dep(name = "llvm", version = "0.8.1")
+bazel_dep(name = "llvm", version = "0.8.23")
 single_version_override(
     module_name = "llvm",
     patch_strip = 1,
     patches = [
-        "//:build/llvm_msvc.patch",  # TODO: remove that once merged to upstream
+        "//:build/bazel7.patch",  # TODO: remove that once merged to upstream
     ],
 )
 

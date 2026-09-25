@@ -10,10 +10,13 @@ try-import %workspace%/../build/remote_cache.bazelrc
 # Enable remote cache key scrubbing
 common --experimental_remote_scrubbing_config=build/bazel_scrubbing.cfg
 
-# Enable remote downloader config w/ allowed hosts and caching proxies
-common --downloader_config=build/bazel_downloader.cfg
 
 # TeamCity-specific options
 common:teamcity --show_progress_rate_limit=30
 
 try-import %workspace%/.bazelrc-user.bazelrc
+
+build --noincompatible_no_implicit_file_export
+build --nocheck_bzl_visibility
+build --java_language_version=21
+build --java_runtime_version=remotejdk_21

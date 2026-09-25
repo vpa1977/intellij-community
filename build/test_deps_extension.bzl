@@ -55,13 +55,14 @@ def test_deps_repository(repository_name):
         repository_ctx.file(
             "BUILD",
             """
-package(default_visibility = ["//visibility:public"]) 
+package(default_visibility = ["//visibility:public"])
 exports_files([
 {files}
 ])
 """.format(files = ",\n".join(["  \"%s\"" % f.name for f in files])),
         )
-        return repository_ctx.repo_metadata(reproducible = True)
+        if hasattr(repository_ctx, "repo_metadata"):
+            return repository_ctx.repo_metadata(reproducible = True)
 
     def make_repository_rule():
         return repository_rule(

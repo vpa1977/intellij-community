@@ -1,5 +1,6 @@
 load("@rules_kotlin//kotlin/internal:defs.bzl", KotlinInfo = "KtJvmInfo")
 load("//:rules/impl/compile-wasmjs.bzl", "KtWasmJsInfo")
+load("@bazel_features//:features.bzl", "bazel_features")
 
 visibility("private")
 
@@ -41,9 +42,29 @@ def _wasmjs_provided_library(name, visibility, lib):
         exports = [lib],
     )
 
+def _fallback_macro(inherit_attrs = None, attrs = {}, implementation = None):
+    def _wrapper(name, **kwargs):
+        call_kwargs = dict(kwargs)
+        for k, a in attrs.items():
+            if k not in call_kwargs:
+                if type(a) in ["string", "bool", "int", "list"]:
+                    call_kwargs[k] = a
+                elif hasattr(a, "default"):
+                    call_kwargs[k] = a.default
+                elif k.endswith("_enabled"):
+                    call_kwargs[k] = True
+                elif k in ["copts", "linkopts", "srcs", "hdrs", "deps", "data", "features"]:
+                    call_kwargs[k] = []
+        return implementation(name = name, **call_kwargs)
+    return _wrapper
+
+_macro = getattr(bazel_features.globals, "macro", None)
+macro = _macro if _macro != None else _fallback_macro
+
+
 wasmjs_provided_library = macro(
     attrs = {
-        "lib": attr.label(mandatory = True, allow_files = False, providers = [KtWasmJsInfo, KotlinInfo], configurable = False),
+        "lib": attr.label(mandatory = True, allow_files = False, providers = [KtWasmJsInfo, KotlinInfo]),
     },
     implementation = _wasmjs_provided_library,
 )

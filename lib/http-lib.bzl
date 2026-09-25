@@ -34,8 +34,8 @@ def _http_jvm_lib(ctx):
     ctx.file("BUILD", _HTTP_JAR_BUILD.format(
         jar = downloaded_file_name,
     ))
-
-    return ctx.repo_metadata(reproducible = True)
+    if hasattr(ctx, "repo_metadata"):
+        return ctx.repo_metadata(reproducible = True)
 
 _http_jar_attrs = {
     "sha256": attr.string(mandatory = True),
