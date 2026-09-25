@@ -1,0 +1,21 @@
+diff --git a/kotlin/internal/jvm/jvm.bzl b/kotlin/internal/jvm/jvm.bzl
+--- a/kotlin/internal/jvm/jvm.bzl
++++ b/kotlin/internal/jvm/jvm.bzl
+@@ -200,7 +200,7 @@ _implicit_deps = utils.add_dicts(
+         ),
+     },
+     # Only add _windows_launcher_maker when the toolchain is not available (legacy fallback)
+-    {} if bazel_features.rules._has_launcher_maker_toolchain else {
++    {} if getattr(bazel_features.rules, "_has_launcher_maker_toolchain", False) else {
+         "_windows_launcher_maker": attr.label(
+             default = "@bazel_tools//tools/launcher:launcher_maker",
+             cfg = "exec",
+@@ -367,7 +367,7 @@ _common_toolchains = [
+ 
+ _runnable_common_toolchains = [
+     _JAVA_RUNTIME_TOOLCHAIN_TYPE,
+-] + ([config_common.toolchain_type(_LAUNCHER_MAKER_TOOLCHAIN_TYPE, mandatory = False)] if bazel_features.rules._has_launcher_maker_toolchain else [])
++] + ([config_common.toolchain_type(_LAUNCHER_MAKER_TOOLCHAIN_TYPE, mandatory = False)] if getattr(bazel_features.rules, "_has_launcher_maker_toolchain", False) else [])
+ 
+ kt_jvm_library = rule(
+     doc = """This rule compiles and links Kotlin and Java sources into a .jar file.""",

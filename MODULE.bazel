@@ -6,6 +6,10 @@ bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "rules_kotlin", version = "2.2.2")
 archive_override(
     module_name = "rules_kotlin",
+    patch_strip = 1,
+    patches = [
+        "//:build/rules-kotlin-bazel7-launcher-maker.patch",
+    ],
     strip_prefix = "rules_kotlin-ffbc4307c3a55f61e05c12481b6dcb929d6e2b1f",
     urls = "https://github.com/JetBrains/rules_kotlin/archive/ffbc4307c3a55f61e05c12481b6dcb929d6e2b1f.zip",
 )
