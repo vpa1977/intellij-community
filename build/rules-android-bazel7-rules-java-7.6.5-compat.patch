@@ -1,0 +1,85 @@
+diff --git rules/proguard.bzl rules/proguard.bzl
+--- rules/proguard.bzl
++++ rules/proguard.bzl
+@@ -15,7 +15,6 @@
+ 
+ load("//rules:visibility.bzl", "PROJECT_VISIBILITY")
+ load("@rules_java//java/common:java_common.bzl", "java_common")
+-load("@rules_java//java/common:proguard_spec_info.bzl", "ProguardSpecInfo")
+ load(":acls.bzl", "acls")
+ load(":android_neverlink_aspect.bzl", "StarlarkAndroidNeverlinkInfo")
+ load(":baseline_profiles.bzl", _baseline_profiles = "baseline_profiles")
+@@ -25,6 +24,22 @@
+ 
+ visibility(PROJECT_VISIBILITY)
+ 
++# Bazel 7 compat: the rules_java pinned by the system Bazel 7 installation
++# (7.6.5) does not provide java/common/proguard_spec_info.bzl yet.
++# Define the provider locally (same shape as in newer rules_java) so that
++# analysis works; java rules from rules_java 7.6.5 never produce it anyway.
++def _proguard_spec_info_init(specs):
++    # The constructor supports positional parameter, i.e. ProguardSpecInfo([file])
++    return {"specs": specs}
++
++ProguardSpecInfo, _ = provider(
++    doc = "Information about proguard specs for Android binaries.",
++    fields = {
++        "specs": "A list of proguard specs files",
++    },
++    init = _proguard_spec_info_init,
++)
++
+ _ProguardSpecContextInfo = provider(
+     doc = "Contains data from processing Proguard specs.",
+     fields = dict(
+diff --git rules/aar_import/impl.bzl rules/aar_import/impl.bzl
+--- rules/aar_import/impl.bzl
++++ rules/aar_import/impl.bzl
+@@ -41,7 +41,7 @@
+ load("//rules:visibility.bzl", "PROJECT_VISIBILITY")
+ load("@rules_java//java/common:java_common.bzl", "java_common")
+ load("@rules_java//java/common:java_info.bzl", "JavaInfo")
+-load("@rules_java//java/common:proguard_spec_info.bzl", "ProguardSpecInfo")
++load("//rules:proguard.bzl", "ProguardSpecInfo")
+ 
+ visibility(PROJECT_VISIBILITY)
+ 
+diff --git rules/android_library/impl.bzl rules/android_library/impl.bzl
+--- rules/android_library/impl.bzl
++++ rules/android_library/impl.bzl
+@@ -35,7 +35,7 @@
+ load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
+ load("@rules_java//java/common:java_info.bzl", "JavaInfo")
+ load("@rules_java//java/common:java_plugin_info.bzl", "JavaPluginInfo")
+-load("@rules_java//java/common:proguard_spec_info.bzl", "ProguardSpecInfo")
++load("//rules:proguard.bzl", "ProguardSpecInfo")
+ 
+ visibility(PROJECT_VISIBILITY)
+ 
+diff --git rules/java.bzl rules/java.bzl
+--- rules/java.bzl
++++ rules/java.bzl
+@@ -15,12 +15,22 @@
+ 
+ load("//rules:visibility.bzl", "PROJECT_VISIBILITY")
+ load("@rules_java//java/common:java_common.bzl", "java_common")
+-load("@rules_java//java/private:android_support.bzl", "android_support")  # buildifier: disable=bzl-visibility
+ load(":path.bzl", _path = "path")
+ load(":utils.bzl", "log")
+ 
+ visibility(PROJECT_VISIBILITY)
+ 
++# Bazel 7 compat: the rules_java pinned by the system Bazel 7 installation
++# (7.6.5) does not provide java/private/android_support.bzl yet. Shim it with
++# an identity function; the legacy "deps without srcs" export compatibility
++# transform is a no-op for the purposes of analysis.
++def _identity_sourceless_deps_exports_compatibility(java_info):
++    return java_info
++
++android_support = struct(
++    enable_implicit_sourceless_deps_exports_compatibility = _identity_sourceless_deps_exports_compatibility,
++)
++
+ _ANDROID_CONSTRAINT_MISSING_ERROR = (
+     "A list of constraints provided without the 'android' constraint."
+ )

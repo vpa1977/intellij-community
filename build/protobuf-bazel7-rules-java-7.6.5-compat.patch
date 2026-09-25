@@ -1,0 +1,60 @@
+diff --git a/bazel/private/java_proto_support.bzl b/bazel/private/java_proto_support.bzl
+--- a/bazel/private/java_proto_support.bzl
++++ b/bazel/private/java_proto_support.bzl
+@@ -7,6 +7,15 @@
+ """Support for compiling protoc generated Java code."""
+ 
+-load("@rules_java//java/private:proto_support.bzl", "compile", "merge")  # buildifier: disable=bzl-visibility
++load("@rules_java//java/common:java_common.bzl", "java_common")
++
++# Bazel 7 compat: the rules_java pinned by the system Bazel 7 installation
++# (7.6.5) does not provide java/private/proto_support.bzl. Inline its
++# fallback path, which calls java_common directly.
++def compile(*, injecting_rule_kind, enable_jspecify, include_compilation_info, **kwargs):
++    return java_common.compile(**kwargs)
++
++def merge(providers, *, merge_java_outputs = True, merge_source_jars = True):
++    return java_common.merge(providers)
+ 
+ # The provider is used to collect source and runtime jars in the `proto_library` dependency graph.
+ JavaProtoAspectInfo = provider("JavaProtoAspectInfo", fields = ["jars"])
+diff --git a/bazel/private/java_lite_proto_library.bzl b/bazel/private/java_lite_proto_library.bzl
+--- a/bazel/private/java_lite_proto_library.bzl
++++ b/bazel/private/java_lite_proto_library.bzl
+@@ -9,4 +9,3 @@
+ load("@rules_java//java/common:java_common.bzl", "java_common")
+ load("@rules_java//java/common:java_info.bzl", "JavaInfo")
+-load("@rules_java//java/common:proguard_spec_info.bzl", "ProguardSpecInfo")
+ load("//bazel/common:proto_common.bzl", "proto_common")
+@@ -13,7 +12,22 @@
+ load("//bazel/common:proto_info.bzl", "ProtoInfo")
+ load("//bazel/private:java_proto_support.bzl", "JavaProtoAspectInfo", "java_compile_for_protos", "java_info_merge_for_protos")
+ load("//bazel/private:toolchain_helpers.bzl", "toolchains")
+ 
++# Bazel 7 compat: the rules_java pinned by the system Bazel 7 installation
++# (7.6.5) does not provide java/common/proguard_spec_info.bzl; define the
++# provider locally with the same shape.
++def _proguard_spec_info_init(specs):
++    # The constructor supports positional parameter, i.e. ProguardSpecInfo([file])
++    return {"specs": specs}
++
++ProguardSpecInfo, _ = provider(
++    doc = "Information about proguard specs for Android binaries.",
++    fields = {
++        "specs": "A list of proguard specs files",
++    },
++    init = _proguard_spec_info_init,
++)
++
+ _PROTO_TOOLCHAIN_ATTR = "_aspect_proto_toolchain_for_javalite"
+ 
+ _JAVA_LITE_PROTO_TOOLCHAIN = Label("//bazel/private:javalite_toolchain_type")
+@@ -106,7 +120,7 @@
+     runtime = proto_toolchain_info.runtime
+ 
+     if runtime:
+-        proguard_provider_specs = runtime[ProguardSpecInfo]
++        proguard_provider_specs = runtime[ProguardSpecInfo] if ProguardSpecInfo in runtime else ProguardSpecInfo(depset())
+     else:
+         proguard_provider_specs = ProguardSpecInfo(depset())
+ 

@@ -19,3 +19,30 @@ diff --git a/kotlin/internal/jvm/jvm.bzl b/kotlin/internal/jvm/jvm.bzl
  
  kt_jvm_library = rule(
      doc = """This rule compiles and links Kotlin and Java sources into a .jar file.""",
+diff --git a/src/main/starlark/core/compile/rules.bzl b/src/main/starlark/core/compile/rules.bzl
+--- a/src/main/starlark/core/compile/rules.bzl
++++ b/src/main/starlark/core/compile/rules.bzl
+@@ -236,5 +236,5 @@
+         for (k, v) in _COMMON_ATTRS.items() + _BINARY_ATTRS.items()
+     },
+-    toolchains = [TYPE] + ([LAUNCHER_MAKER_TOOLCHAIN_TYPE] if bazel_features.rules._has_launcher_maker_toolchain else []),
++    toolchains = [TYPE] + ([LAUNCHER_MAKER_TOOLCHAIN_TYPE] if getattr(bazel_features.rules, "_has_launcher_maker_toolchain", False) else []),
+     executable = True,
+ )
+diff --git a/src/main/starlark/core/compile/common.bzl b/src/main/starlark/core/compile/common.bzl
+--- a/src/main/starlark/core/compile/common.bzl
++++ b/src/main/starlark/core/compile/common.bzl
+@@ -31,11 +31,11 @@
+ def find_launcher_maker(ctx):
+     """Find the launcher maker binary, preferring the toolchain approach."""
+-    if bazel_features.rules._has_launcher_maker_toolchain:
++    if getattr(bazel_features.rules, "_has_launcher_maker_toolchain", False):
+         return ctx.toolchains[LAUNCHER_MAKER_TOOLCHAIN_TYPE].binary
+     return ctx.executable._windows_launcher_maker
+ 
+ def get_launcher_maker_toolchain_for_action():
+     """Return the toolchain type for ctx.actions.run, or None if not available."""
+-    if bazel_features.rules._has_launcher_maker_toolchain:
++    if getattr(bazel_features.rules, "_has_launcher_maker_toolchain", False):
+         return LAUNCHER_MAKER_TOOLCHAIN_TYPE
+     return None

@@ -12,6 +12,12 @@ build/dependencies/build/android-sdk/
 out/
 platform/sqlite/target
 
+# stray tool worktrees break //... expansion
+.kilo/
+
+# vendored bazel_features used via --override_module, not part of the build
+build/bazel7/bazel_features
+
 # specifically ignore .community.root.marker marker file,
 # so Bazel execroot won't be detected as a community root
 .community.root.marker

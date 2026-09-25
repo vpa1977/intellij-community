@@ -23,18 +23,43 @@ single_version_override(
     patches = [
         "//:build/jvm-rules/protobuf-33.4-reuse-win64-for-arm.patch",
         "//:build/protobuf-bazel7-PackageSpecificationInfo.patch",
+        "//:build/protobuf-bazel7-rules-java-7.6.5-compat.patch",
     ],
     version = "33.4",
 )
 
 bazel_dep(name = "aspect_rules_lint", version = "2.5.0")
+single_version_override(
+    module_name = "aspect_rules_lint",
+    patch_strip = 1,
+    patches = [
+        "//:build/aspect-rules-lint-bazel7-JavaRuntimeInfo.patch",
+    ],
+    version = "2.5.0",
+)
 bazel_dep(name = "buildifier_prebuilt", version = "8.5.1.1")
+
+# Bazel 7 compat: the BCR registry patch go_dev_dep.patch for aspect_bazel_lib
+# 2.22.0 only applies with a 4-line offset, which Bazel 7's strict patcher
+# cannot handle. Override the source and apply locally fixed patch copies.
+archive_override(
+    module_name = "aspect_bazel_lib",
+    integrity = "sha256-/EWc5y8ZjTgiz6+N3NB/Kv73HTVtHw/lE7sWOMUJS70=",
+    patch_strip = 1,
+    patches = [
+        "//:build/aspect-bazel-lib-2.22.0-go-dev-dep-bazel7.patch",
+        "//:build/aspect-bazel-lib-2.22.0-module-version.patch",
+    ],
+    strip_prefix = "bazel-lib-2.22.0",
+    urls = "https://github.com/bazel-contrib/bazel-lib/releases/download/v2.22.0/bazel-lib-v2.22.0.tar.gz",
+)
 
 single_version_override(
     module_name = "rules_jvm_external",
     patches = [
         "//:build/jvm-rules/rules-jvm-external-6.10-make-coursier-repo-targets-shell-free-and-hermetic.patch",
         "//:build/jvm-rules/rules-jvm-external-6.10-default-to-maven-resolver.patch",
+        "//:build/jvm-rules/rules-jvm-external-bazel7-coursier-without-lockfile.patch",
     ],
     version = "6.10",
 )
@@ -43,6 +68,7 @@ single_version_override(
     module_name = "rules_android",
     patches = [
         "//:build/jvm-rules/rules-android-0.7.1-pin-maven-installs.patch",
+        "//:build/rules-android-bazel7-rules-java-7.6.5-compat.patch",
     ],
     version = "0.7.1",
 )
@@ -75,10 +101,15 @@ single_version_override(
     ],
 )
 
-register_toolchains(
-    "@llvm//toolchain:all",
-    dev_dependency = True,
-)  # `dev_dependency = True` to avoid registering toolchains in modules using that module, see https://github.com/bazel-contrib/toolchains_llvm/issues/569
+# Bazel 7 compat: llvm toolchain registration disabled. The system Bazel 7
+# installation pins rules_cc to a stripped copy that lacks files required by
+# @@llvm~//toolchain (cc/toolchains/artifacts.bzl, cc/cc_static_library.bzl),
+# so toolchain resolution fails for every cc target while it is registered.
+# cc targets fall back to the auto-detected local cc toolchain.
+# register_toolchains(
+#     "@llvm//toolchain:all",
+#     dev_dependency = True,
+# )  # `dev_dependency = True` to avoid registering toolchains in modules using that module, see https://github.com/bazel-contrib/toolchains_llvm/issues/569
 
 bazel_dep(name = "rules_python", version = "1.7.0")
 

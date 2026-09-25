@@ -172,12 +172,22 @@ test --test_timeout=60,300,900,14400
 # A workaround for https://github.com/bazelbuild/rules_kotlin/issues/1352
 common --repo_env=ANDROID_HOME=
 
+# Bazel 7 compat: the system Bazel 7 installation (/etc/bazel/bazelrc) pins
+# bazel_features to an old stripped copy that lacks feature groups needed by
+# protobuf (proto.*) and rules_kotlin (rules._has_launcher_maker_toolchain).
+# Override with a vendored 1.30.0 whose empty native.bazel_version is pinned
+# to 7.7.1 (see build/bazel7/bazel_features/private/version_repo.bzl).
+# The later override wins over /etc/bazel/bazelrc.
+common --override_module=bazel_features=build/bazel7/bazel_features
+
 # Use prebuilt protoc instead of building from source, https://protobuf.dev/news/2026-01-16/
 common --incompatible_enable_proto_toolchain_resolution
 common --@protobuf//bazel/toolchains:prefer_prebuilt_protoc=true
 
 # need to use Python from rules_python in rules_pkg in pkg_zip target
-common --@rules_python//python/config_settings:bootstrap_impl=script
+# Bazel 7 compat: disabled, Bazel 7 resolves rules_python to its built-in stripped
+# copy (~0.22.1) which does not declare the bootstrap_impl flag.
+# common --@rules_python//python/config_settings:bootstrap_impl=script
 
 # Retry downloads up to 5 times
 common --experimental_repository_downloader_retries=5

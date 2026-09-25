@@ -1,0 +1,18 @@
+diff --git private/extensions/maven.bzl private/extensions/maven.bzl
+--- private/extensions/maven.bzl
++++ private/extensions/maven.bzl
+@@ -695,6 +695,13 @@
+         repos.get(repo_name)["lock_file"] = lock_files[0]
+ 
+     existing_repos = []
+     for (name, repo) in repos.items():
++        # Bazel 7 compat: only the coursier resolver allows the lock file to be
++        # omitted. With the maven resolver made the default, installs without a
++        # lock file (e.g. bazel_worker_maven from bazel_worker_java) would never
++        # generate their repository; fall back to coursier for those.
++        if not repo.get("lock_file"):
++            repo["resolver"] = "coursier"
++
+         boms_json = [json.encode(remove_fields(b)) for b in repo.get("boms", [])]
+         artifacts_json = [json.encode(remove_fields(a)) for a in repo.get("artifacts", [])]
+ 

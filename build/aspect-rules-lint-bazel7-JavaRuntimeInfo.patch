@@ -1,0 +1,16 @@
+diff --git a/lint/ktlint.bzl b/lint/ktlint.bzl
+--- a/lint/ktlint.bzl
++++ b/lint/ktlint.bzl
+@@ -51,9 +51,11 @@
+ """
+ 
+ load("@bazel_skylib//lib:dicts.bzl", "dicts")
+-load("@rules_java//java/common/rules:java_runtime.bzl", "JavaRuntimeInfo")
+ load("//lint/private:lint_aspect.bzl", "LintOptionsInfo", "filter_srcs", "noop_lint_action", "output_files", "should_visit")
+ 
++# Bazel 7 compat: the rules_java pinned by the system Bazel 7 installation
++# (7.6.5) does not provide java/common/rules/java_runtime.bzl, but
++# JavaRuntimeInfo is still available as a native global there.
+ _MNEMONIC = "AspectRulesLintKTLint"
+ 
+ def ktlint_action(ctx, executable, srcs, editorconfig, stdout, baseline_file, java_runtime, ruleset_jar = None, exit_code = None, options = []):

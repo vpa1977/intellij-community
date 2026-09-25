@@ -87,14 +87,10 @@ http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_
 # `KOTLIN_COMPOSE_COMPILER_PLUGIN` path macro). If you rename this variable, update both regexes too.
 _KOTLIN_VERSION = "2.4.0"
 
-python = use_extension("@rules_python//python/extensions:python.bzl", "python")
-python.toolchain(
-    is_default = True,
-    python_version = "3.14",
-)
-use_repo(python, "python_3_14")
-
-register_toolchains("@python_3_14//:all")
+# Bazel 7 compat: the python 3.14 toolchain setup was removed. The system Bazel 7
+# installation pins rules_python to a stripped 0.22.1 copy whose python extension
+# supports neither `is_default` nor Python 3.14, and nothing in this module
+# references @python_3_14.
 
 register_toolchains(
     "@llvm//toolchain:all",
