@@ -1,0 +1,115 @@
+diff --git a/directory.bzl b/directory.bzl
+index 102f0bf..5c20f8b 100644
+--- a/directory.bzl
++++ b/directory.bzl
+@@ -49,7 +49,6 @@ _headers_directory = rule(
+         "directory": attr.label(),
+         "source_directory": attr.label(),
+     },
+-    cfg = config.none(),
+ )
+ 
+ def _directory_info_impl(ctx):
+diff --git a/extensions/llvm.bzl b/extensions/llvm.bzl
+index f43ff8f..16fe2cb 100644
+--- a/extensions/llvm.bzl
++++ b/extensions/llvm.bzl
+@@ -171,7 +171,7 @@ bzl_library(
+         "version.bzl",
+         "LLVM_VERSION = {}\n".format(repr(rctx.attr.llvm_version)),
+     )
+-    return rctx.repo_metadata(reproducible = True)
++    return None
+ 
+ _llvm_version_repository = repository_rule(
+     implementation = _llvm_version_repository_impl,
+diff --git a/private/llvm_project_archive.bzl b/private/llvm_project_archive.bzl
+index 0620a6e..32db524 100644
+--- a/private/llvm_project_archive.bzl
++++ b/private/llvm_project_archive.bzl
+@@ -156,6 +156,8 @@ def _update_integrity_attrs(rctx, archive_info, remote_files_info, remote_patche
+         if rctx.attr.remote_patches != remote_patch_integrity:
+             overrides["remote_patches"] = remote_patch_integrity
+ 
++    if (not hasattr(rctx, "repo_metadata")):
++        return None
+     if not overrides:
+         return rctx.repo_metadata(reproducible = True)
+     return rctx.repo_metadata(
+diff --git a/runtimes/resource_directory.bzl b/runtimes/resource_directory.bzl
+index 13f974b..2bc962f 100644
+--- a/runtimes/resource_directory.bzl
++++ b/runtimes/resource_directory.bzl
+@@ -3,6 +3,8 @@
+ load("@bazel_lib//lib:copy_file.bzl", "COPY_FILE_TOOLCHAINS", "copy_file_action")
+ load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory_bin_action")
+ load("//constraints/windows/abi:abis.bzl", "WINDOWS_TARGET_TRIPLES_BY_CONFIG")
++load("@bazel_features//:features.bzl", "bazel_features")
++
+ 
+ # echo 'int main() {}' | bazel run //tools:clang -- -x c - -fuse-ld=lld -v --rtlib=compiler-rt -### --target=<triple>
+ TRIPLE_SELECT_DICT = {
+@@ -89,6 +91,43 @@ def _resource_directory_macro_impl(name, srcs, target_triple, **kwargs):
+         **kwargs
+     )
+ 
++def _fallback_macro(inherit_attrs = None, attrs = {}, implementation = None, doc = None):
++    def _wrapper(name, **kwargs):
++        call_kwargs = dict(kwargs)
++        for k, a in attrs.items():
++            if k not in call_kwargs:
++                print ("!!! " + str(a) + " === " + type(a))
++                if type(a) in ["string", "bool", "int", "list"]:
++                    call_kwargs[k] = a
++                elif str(a) in ["<attr.string>"]:
++                    call_kwargs[k] = ""
++                elif str(a) in ["<attr.string_list>"]:
++                    call_kwargs[k] = []
++                elif str(a) in ["<attr.string_dict>"]:
++                    call_kwargs[k] = {}
++                elif hasattr(a, "default"):
++                    call_kwargs[k] = a.default
++                elif k.endswith("_enabled"):
++                    call_kwargs[k] = True
++                elif k in ["copts", "linkopts", "srcs", "hdrs", "deps", "data", "features", "jvm_flags"]:
++                    call_kwargs[k] = []
++        if "visibility" not in call_kwargs:
++            call_kwargs["visibility"] = ["//visibility:public"]
++        if "target_triple" not in call_kwargs:
++            call_kwargs["target_triple"] = ""
++
++        print("WARNING: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
++        print(*call_kwargs)
++        print(attrs.items())
++        print(inherit_attrs)
++        print("WARNING: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
++        return implementation(name = name, **call_kwargs)
++    return _wrapper
++
++_macro = getattr(bazel_features.globals, "macro", None)
++macro = _macro if _macro != None else _fallback_macro
++
++
+ resource_directory = macro(
+     implementation = _resource_directory_macro_impl,
+     inherit_attrs = _resource_directory,
+diff --git a/toolchain/runtimes/cc_unsanitized_library.bzl b/toolchain/runtimes/cc_unsanitized_library.bzl
+index 348aa7b..dd33046 100644
+--- a/toolchain/runtimes/cc_unsanitized_library.bzl
++++ b/toolchain/runtimes/cc_unsanitized_library.bzl
+@@ -1,6 +1,6 @@
+ load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
+ load("@rules_cc//cc/private:graph_node_info.bzl", "GraphNodeInfo")  # buildifier: disable=bzl-visibility
+-load("@rules_cc//cc/private/rules_impl:cc_shared_library.bzl", "graph_structure_aspect")  # buildifier: disable=bzl-visibility
++
+ 
+ def _reset_sanitizers_impl(settings, attr):
+     return {
+@@ -107,7 +107,6 @@ cc_unsanitized_library = rule(
+         "dep": attr.label(
+             cfg = _reset_sanitizers,
+             providers = [CcInfo],
+-            aspects = [graph_structure_aspect],
+         ),
+         "disable_zstd": attr.bool(),
+         "platform": attr.label(),
