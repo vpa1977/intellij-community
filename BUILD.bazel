@@ -1,6 +1,6 @@
 load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
 load("@rules_java//java:defs.bzl", "java_binary")
-load("@rules_java//toolchains:default_java_toolchain.bzl", "default_java_toolchain")
+load("@rules_java//toolchains:default_java_toolchain.bzl", "VANILLA_TOOLCHAIN_CONFIGURATION", "default_java_toolchain")
 load("@rules_java//toolchains:java_toolchain_alias.bzl", "java_runtime_version_alias")
 load("@rules_jvm//:jvm.bzl", "jvm_library", "kt_javac_options")
 load("//build:compiler-options.bzl", "create_kotlinc_options")
@@ -69,6 +69,10 @@ java_runtime_version_alias(
 
 default_java_toolchain(
     name = "toolchain_jdk_25",
+    # Bazel 7 compat: use the vanilla (no Error Prone) configuration; the
+    # Error Prone version bundled in Bazel 7's JavaBuilder crashes on JDK 25
+    # javac internals (NoSuchFieldError: TypeTag.UNKNOWN).
+    configuration = VANILLA_TOOLCHAIN_CONFIGURATION,
     java_runtime = ":remotejbr_25",
     source_version = "25",
     target_version = "25",
