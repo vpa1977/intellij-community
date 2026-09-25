@@ -1,10 +1,21 @@
+# Bazel 8 uses `+` as the canonical repository name separator in execroot paths
+# (external/<name>+/...), while Bazel 7 uses `~` (external/<name>~/...).
+# Match both so the manifest mapping works on either Bazel version.
 _ULTIMATE_PREFIXES = [
     struct(
         path_prefix = "external/community+/",
         destination_prefix = "community/",
     ),
     struct(
+        path_prefix = "external/community~/",
+        destination_prefix = "community/",
+    ),
+    struct(
         path_prefix = "external/jps_to_bazel+/",
+        destination_prefix = "community/platform/build-scripts/bazel/",
+    ),
+    struct(
+        path_prefix = "external/jps_to_bazel~/",
         destination_prefix = "community/platform/build-scripts/bazel/",
     ),
 ]
@@ -15,7 +26,15 @@ _COMMUNITY_PREFIXES = [
         destination_prefix = "",
     ),
     struct(
+        path_prefix = "external/community~/",
+        destination_prefix = "",
+    ),
+    struct(
         path_prefix = "external/jps_to_bazel+/",
+        destination_prefix = "platform/build-scripts/bazel/",
+    ),
+    struct(
+        path_prefix = "external/jps_to_bazel~/",
         destination_prefix = "platform/build-scripts/bazel/",
     ),
 ]
