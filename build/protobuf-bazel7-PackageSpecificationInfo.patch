@@ -1,0 +1,47 @@
+diff --git a/bazel/common/proto_common.bzl b/bazel/common/proto_common.bzl
+--- a/bazel/common/proto_common.bzl
++++ b/bazel/common/proto_common.bzl
+@@ -99,7 +99,7 @@ def _check_collocated(label, proto_info, proto_lang_toolchain_info):
+       proto_lang_toolchain_info: (ProtoLangToolchainInfo) The proto lang toolchain info.
+         Obtained from a `proto_lang_toolchain` target.
+     """
+-    _PackageSpecificationInfo = bazel_features.globals.PackageSpecificationInfo
++    _PackageSpecificationInfo = getattr(bazel_features.globals, "PackageSpecificationInfo", None)
+     if not _PackageSpecificationInfo:
+         if proto_lang_toolchain_info.allowlist_different_package or getattr(proto_info, "allow_exports", None):
+             fail("Allowlist checks not supported before Bazel 6.4.0")
+
+diff --git a/bazel/private/proto_lang_toolchain_rule.bzl b/bazel/private/proto_lang_toolchain_rule.bzl
+--- a/bazel/private/proto_lang_toolchain_rule.bzl
++++ b/bazel/private/proto_lang_toolchain_rule.bzl
+@@ -142,7 +142,7 @@ proto_lang_toolchain = rule(
+         # TODO: add doc
+         "allowlist_different_package": attr.label(
+             cfg = "exec",
+-            providers = [bazel_features.globals.PackageSpecificationInfo] if bazel_features.globals.PackageSpecificationInfo else [],
++            providers = [getattr(bazel_features.globals, "PackageSpecificationInfo", None)] if getattr(bazel_features.globals, "PackageSpecificationInfo", None) else [],
+         ),
+         # TODO: add doc
+         "toolchain_type": attr.label(),
+
+diff --git a/bazel/private/proto_library_rule.bzl b/bazel/private/proto_library_rule.bzl
+--- a/bazel/private/proto_library_rule.bzl
++++ b/bazel/private/proto_library_rule.bzl
+@@ -72,7 +72,7 @@ def _proto_library_impl(ctx):
+     import_prefix = _get_import_prefix(ctx)
+     strip_import_prefix = _get_strip_import_prefix(ctx)
+     check_for_reexport = deps + exports if not srcs else exports
+-    _PackageSpecificationInfo = bazel_features.globals.PackageSpecificationInfo
++    _PackageSpecificationInfo = getattr(bazel_features.globals, "PackageSpecificationInfo", None)
+     for proto in check_for_reexport:
+         if getattr(proto, "allow_exports", None):
+             if not _PackageSpecificationInfo:
+@@ -360,7 +360,7 @@ proto_library = rule(
+         ),
+         "allow_exports": attr.label(
+             cfg = "exec",
+-            providers = [bazel_features.globals.PackageSpecificationInfo] if bazel_features.globals.PackageSpecificationInfo else [],
++            providers = [getattr(bazel_features.globals, "PackageSpecificationInfo", None)] if getattr(bazel_features.globals, "PackageSpecificationInfo", None) else [],
+             doc = """
+ An optional allowlist that prevents proto library to be reexported or used in
+ lang_proto_library that is not in one of the listed packages.""",

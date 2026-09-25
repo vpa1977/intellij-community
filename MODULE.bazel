@@ -22,6 +22,7 @@ single_version_override(
     patch_strip = 1,
     patches = [
         "//:build/jvm-rules/protobuf-33.4-reuse-win64-for-arm.patch",
+        "//:build/protobuf-bazel7-PackageSpecificationInfo.patch",
     ],
     version = "33.4",
 )
