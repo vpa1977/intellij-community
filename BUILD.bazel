@@ -1,5 +1,7 @@
 load("@aspect_rules_lint//format:defs.bzl", "format_multirun")
 load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_java//toolchains:default_java_toolchain.bzl", "default_java_toolchain")
+load("@rules_java//toolchains:java_toolchain_alias.bzl", "java_runtime_version_alias")
 load("@rules_jvm//:jvm.bzl", "jvm_library", "kt_javac_options")
 load("//build:compiler-options.bzl", "create_kotlinc_options")
 
@@ -52,6 +54,25 @@ create_kotlinc_options(
 create_kotlinc_options(
     name = "k25",
     jvm_target = "25",
+)
+
+# Bazel 7 compat: the system rules_java 7.6.5 only registers Java compilation
+# toolchains up to JDK 21 (each gated on --java_language_version), while the
+# build uses --java_language_version=25. Provide a JDK 25 compilation toolchain
+# backed by the JBR 25 runtime registered via //build:jbr-toolchains.bzl.
+# Registered in MODULE.bazel via //:toolchain_jdk_25_definition.
+java_runtime_version_alias(
+    name = "remotejbr_25",
+    runtime_version = "remotejbr_25",
+    visibility = ["//visibility:public"],
+)
+
+default_java_toolchain(
+    name = "toolchain_jdk_25",
+    java_runtime = ":remotejbr_25",
+    source_version = "25",
+    target_version = "25",
+    visibility = ["//visibility:public"],
 )
 
 java_binary(

@@ -17,6 +17,10 @@ platform/sqlite/target
 
 # vendored bazel_features used via --override_module, not part of the build
 build/bazel7/bazel_features
+# vendored rules_license used via --override_module, not part of the build
+build/bazel7/rules_license
+# vendored rules_proto used via --override_module, not part of the build
+build/bazel7/rules_proto
 
 # specifically ignore .community.root.marker marker file,
 # so Bazel execroot won't be detected as a community root

@@ -1,0 +1,17 @@
+--- private/rules/coursier.bzl
++++ private/rules/coursier.bzl
+@@ -298,6 +298,14 @@
+     if _is_windows(repository_ctx):
+         java_candidates = ["../bazel_tools/jdk/bin/java.exe"] + java_candidates
+ 
++    # Bazel 7 compat: @bazel_tools//jdk only exists when Bazel itself runs with
++    # an embedded JDK. This Bazel 7 installation has none (it requires
++    # --server_javabase), so fall back to the local JDK repository created by
++    # rules_java's toolchains extension.
++    java_candidates.append("../rules_java~~toolchains~local_jdk/bin/java")
++    if _is_windows(repository_ctx):
++        java_candidates.append("../rules_java~~toolchains~local_jdk/bin/java.exe")
++
+     for java_candidate in java_candidates:
+         java_path = repository_ctx.path(java_candidate)
+         if java_path.exists:

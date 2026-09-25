@@ -121,6 +121,13 @@ common --experimental_platform_in_output_dir
 
 # Do not depend on external environment
 common --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+# Bazel 7 compat: unlike Bazel 8+, Bazel 7 leaks --action_env into repository
+# rule environments, so the line above also disables local cc toolchain
+# autodetection in @local_config_cc_toolchains. With the llvm toolchain
+# registration disabled in MODULE.bazel, that leaves no cc toolchain at all.
+# --repo_env takes precedence over --action_env for repository rules and
+# re-enables detection of the local cc toolchain.
+common --repo_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=0
 common --action_env BAZEL_NO_APPLE_CPP_TOOLCHAIN=1
 startup --noautodetect_server_javabase
 
@@ -179,6 +186,13 @@ common --repo_env=ANDROID_HOME=
 # to 7.7.1 (see build/bazel7/bazel_features/private/version_repo.bzl).
 # The later override wins over /etc/bazel/bazelrc.
 common --override_module=bazel_features=build/bazel7/bazel_features
+# Bazel 7 compat: the system-pinned stripped rules_license 0.0.7 lacks the
+# `purl` field in PackageInfo required by rules_jvm_external (needs >= 1.0.0).
+common --override_module=rules_license=build/bazel7/rules_license
+# Bazel 7 compat: the system-pinned stripped rules_proto declares its own
+# proto toolchain_type with no registered implementations. rules_proto 7.1.0
+# aliases the type to protobuf's (which has registered protoc toolchains).
+common --override_module=rules_proto=build/bazel7/rules_proto
 
 # Use prebuilt protoc instead of building from source, https://protobuf.dev/news/2026-01-16/
 common --incompatible_enable_proto_toolchain_resolution
