@@ -24,3 +24,12 @@ jvm_library(
   runtime_deps = ["@lib//:test-discovery-plugin-base"]
 )
 ### auto-generated section `build intellij.idea.community.build` end
+# >>> build.sh:i_build_target >>>
+load("@rules_java//java:defs.bzl", "java_binary")
+
+java_binary(
+    name = "i_build_target",
+    main_class = "OpenSourceCommunityInstallersBuildTarget",
+    runtime_deps = [":build"],
+)
+# <<< build.sh:i_build_target <<<

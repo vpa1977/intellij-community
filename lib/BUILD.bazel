@@ -110,6 +110,7 @@ java_library(
 ### auto-generated section `maven libs` start
 load("@rules_java//java:defs.bzl", "java_import", "java_library")
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_import")
+load("@rules_jvm//:jvm.bzl", "jvm_import")
 
 java_library(
   name = "aalto-xml",
