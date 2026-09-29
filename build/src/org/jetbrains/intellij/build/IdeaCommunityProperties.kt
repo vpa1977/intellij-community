@@ -1,7 +1,6 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package org.jetbrains.intellij.build
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.plus
 import org.jetbrains.intellij.build.BuildPaths.Companion.COMMUNITY_ROOT
@@ -19,22 +18,6 @@ internal suspend fun createCommunityBuildContext(
   projectHome, IdeaCommunityProperties(COMMUNITY_ROOT.communityRoot), setupTracer = true, options = options)
 
 open class IdeaCommunityProperties(private val communityHomeDir: Path) : BaseIdeaProperties() {
-  companion object {
-    val MAVEN_ARTIFACTS_ADDITIONAL_MODULES: PersistentList<String> = persistentListOf(
-      "intellij.tools.jps.build.standalone",
-      "intellij.devkit.runtimeModuleRepository.jps",
-      "intellij.devkit.jps",
-      "intellij.idea.community.build.tasks",
-      "intellij.platform.debugger.testFramework",
-      "intellij.platform.vcs.testFramework",
-      "intellij.platform.externalSystem.testFramework",
-      "intellij.maven.testFramework",
-      "intellij.tools.reproducibleBuilds.diff",
-      "intellij.space.java.jps",
-      *JewelMavenArtifacts.STANDALONE.keys.toTypedArray(),
-    )
-  }
-
   override val baseFileName: String = "idea"
 
   init {
@@ -58,7 +41,6 @@ open class IdeaCommunityProperties(private val communityHomeDir: Path) : BaseIde
     productLayout.buildAllCompatiblePlugins = false
     productLayout.pluginLayouts = CommunityRepositoryModules.COMMUNITY_REPOSITORY_PLUGINS.addAll(listOf(
       JavaPluginLayout.javaPlugin(),
-      CommunityRepositoryModules.androidPlugin(allPlatforms = true),
       CommunityRepositoryModules.groovyPlugin(),
     ))
 
@@ -69,12 +51,32 @@ open class IdeaCommunityProperties(private val communityHomeDir: Path) : BaseIde
     
     productLayout.skipUnresolvedContentModules = true
 
-    mavenArtifacts.forIdeModules = true
-    mavenArtifacts.additionalModules = mavenArtifacts.additionalModules.addAll(MAVEN_ARTIFACTS_ADDITIONAL_MODULES)
-    mavenArtifacts.squashedModules = mavenArtifacts.squashedModules.addAll(persistentListOf(
+    mavenArtifacts.forIdeModules = false
+    mavenArtifacts.additionalModules = persistentListOf(
+      "intellij.platform.util.rt",
+      "intellij.platform.util.classLoader",
+      "intellij.platform.util",
       "intellij.platform.util.base",
-      "intellij.platform.util.zip",
-    ))
+      "intellij.platform.util.xmlDom",
+      "intellij.platform.core",
+      "intellij.platform.core.impl",
+      "intellij.platform.extensions",
+      "intellij.platform.diagnostic",
+      "intellij.platform.diagnostic.telemetry",
+      "intellij.platform.util.progress",
+      "intellij.platform.util.coroutines",
+      "intellij.platform.jps.model",
+      "intellij.platform.jps.model.impl",
+      "intellij.platform.jps.model.serialization",
+      "intellij.platform.util.jdom",
+      "intellij.platform.analysis",
+      "intellij.java.psi",
+      "intellij.java.psi.impl",
+      "intellij.java.frontback.psi",
+      "intellij.java.frontback.psi.impl",
+      "intellij.java.compiler.antTasks",
+    )
+    mavenArtifacts.squashedModules = persistentListOf()
     mavenArtifacts.patchCoordinates = { module, coordinates ->
       when {
         JewelMavenArtifacts.isPublishedJewelModule(module) -> JewelMavenArtifacts.patchCoordinates(module, coordinates)

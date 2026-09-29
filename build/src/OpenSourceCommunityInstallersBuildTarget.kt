@@ -3,9 +3,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.intellij.build.BuildOptions
 import org.jetbrains.intellij.build.CompilationTasks
-import org.jetbrains.intellij.build.buildCommunityStandaloneJpsBuilder
 import org.jetbrains.intellij.build.createCommunityBuildContext
-import org.jetbrains.intellij.build.impl.buildDistributions
+import org.jetbrains.intellij.build.impl.maven.MavenArtifactsBuilder
 import org.jetbrains.intellij.build.telemetry.TraceManager.spanBuilder
 import org.jetbrains.intellij.build.telemetry.use
 
@@ -20,12 +19,40 @@ internal object OpenSourceCommunityInstallersBuildTarget {
       buildStepsToSkip += BuildOptions.MAC_SIGN_STEP
     }
 
+    val modulesToPublish = listOf(
+      "intellij.platform.util.rt",
+      "intellij.platform.util.classLoader",
+      "intellij.platform.util",
+      "intellij.platform.util.base",
+      "intellij.platform.util.xmlDom",
+      "intellij.platform.core",
+      "intellij.platform.core.impl",
+      "intellij.platform.extensions",
+      "intellij.platform.diagnostic",
+      "intellij.platform.diagnostic.telemetry",
+      "intellij.platform.util.progress",
+      "intellij.platform.util.coroutines",
+      "intellij.platform.jps.model",
+      "intellij.platform.jps.model.impl",
+      "intellij.platform.jps.model.serialization",
+      "intellij.platform.util.jdom",
+      "intellij.platform.analysis",
+      "intellij.java.psi",
+      "intellij.java.psi.impl",
+      "intellij.java.frontback.psi",
+      "intellij.java.frontback.psi.impl",
+      "intellij.java.compiler.antTasks",
+    )
+
     runBlocking(Dispatchers.Default) {
       val context = createCommunityBuildContext(options)
-      CompilationTasks.create(context).compileModules(moduleNames = null, includingTestsInModules = listOf("intellij.platform.jps.build.tests"))
-      buildDistributions(context)
-      spanBuilder("build standalone JPS").use {
-        buildCommunityStandaloneJpsBuilder(targetDir = context.paths.artifactDir.resolve("jps"), context = context)
+      CompilationTasks.create(context).compileModules(moduleNames = modulesToPublish, includingTestsInModules = emptyList())
+      spanBuilder("generate maven artifacts").use {
+        MavenArtifactsBuilder(context).generateMavenArtifacts(
+          moduleNamesToPublish = modulesToPublish,
+          outputDir = "maven-artifacts",
+          validate = false,
+        )
       }
     }
   }
