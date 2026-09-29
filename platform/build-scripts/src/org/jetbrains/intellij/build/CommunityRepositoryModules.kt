@@ -187,7 +187,6 @@ object CommunityRepositoryModules {
       spec.withResource("lib/bundles", "lib/bundles")
     },
     PythonCommunityPluginModules.pythonCommunityPluginLayout(),
-    androidDesignPlugin(),
     pluginAuto(listOf("intellij.completionMlRankingModels")) { spec ->
       spec.bundlingRestrictions.includeInDistribution = PluginDistribution.NOT_FOR_RELEASE
     },
@@ -228,37 +227,6 @@ object CommunityRepositoryModules {
       spec.withProjectLibrary("io.github.java.native.jssc", LibraryPackMode.STANDALONE_SEPARATE)
     },
   )
-
-  private fun androidDesignPlugin(mainModuleName: String = "intellij.android.design-plugin.descriptor"): PluginLayout {
-    return pluginAutoWithCustomDirName(mainModuleName, "design-tools") { spec ->
-      // modules:
-      // design-tools.jar
-      spec.withModule("intellij.android.compose-designer")
-      if (mainModuleName != "intellij.android.design-plugin.descriptor") {
-        spec.withModule("intellij.android.design-plugin.descriptor")
-      }
-      spec.withModule("intellij.android.designer.customview")
-      spec.withModule("intellij.android.designer")
-      spec.withModule("intellij.android.glance-designer")
-      spec.withModule("intellij.android.layoutlib")
-      spec.withModule("intellij.android.nav.editor")
-      spec.withModule("intellij.android.nav.editor.gradle")
-      spec.withModule("intellij.android.preview-designer")
-      spec.withModule("intellij.android.wear-designer")
-      spec.withModule("intellij.android.motion-editor")
-      spec.withModule("intellij.android.visual-lint")
-
-      // libs:
-      spec.withProjectLibrary("layoutlib")
-
-      // :libs
-
-      //"resources": [
-      //  "//prebuilts/studio/layoutlib:layoutlib",
-      //  "//tools/adt/idea/compose-designer:kotlin-compiler-daemon-libs",
-      //],
-    }
-  }
 
   fun androidPlugin(additionalModulesToJars: Map<String, String> = emptyMap(),
                     mainModuleName: String = "intellij.android.plugin.descriptor",
