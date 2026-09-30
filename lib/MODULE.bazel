@@ -10733,34 +10733,6 @@ http_file(
 )
 
 http_file(
-  name = "aws-java-sdk-s3-1_12_431_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.12.431/aws-java-sdk-s3-1.12.431.jar",
-  sha256 = "45b24b098dcaec230fde72b4e0568dab464cf7d8afd8b83fb9ac628778c67df9",
-  downloaded_file_path = "aws-java-sdk-s3-1.12.431.jar"
-)
-
-http_file(
-  name = "aws-java-sdk-kms-1_12_431_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-kms/1.12.431/aws-java-sdk-kms-1.12.431.jar",
-  sha256 = "ffc62a11ad6a454d150a28c66c98e0300186faa53ec34d1c58c7dc5e2f7a3011",
-  downloaded_file_path = "aws-java-sdk-kms-1.12.431.jar"
-)
-
-http_file(
-  name = "aws-java-sdk-core-1_12_431_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.12.431/aws-java-sdk-core-1.12.431.jar",
-  sha256 = "e17a93342d623ecd58449b6142db53c5ec9d1fb7a6a40d6266e56ed796e06fdf",
-  downloaded_file_path = "aws-java-sdk-core-1.12.431.jar"
-)
-
-http_file(
-  name = "jmespath-java-1_12_431_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/jmespath-java/1.12.431/jmespath-java-1.12.431.jar",
-  sha256 = "238630e244b369b57238bb35e9a23382be65771b04a0f36d85df07b61b4ae2b9",
-  downloaded_file_path = "jmespath-java-1.12.431.jar"
-)
-
-http_file(
   name = "java-jwt-4_3_0_http",
   url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/auth0/java-jwt/4.3.0/java-jwt-4.3.0.jar",
   sha256 = "25a2353a1789870d960c0a9d8878a62eb1873116a2299d74f278451697676a67",
@@ -10772,34 +10744,6 @@ http_file(
   url = "https://cache-redirector.jetbrains.com/packages.jetbrains.team/maven/p/ij/intellij-dependencies/org/jetbrains/apple-notary-api-kotlin-client/2.0.1/apple-notary-api-kotlin-client-2.0.1-sources.jar",
   sha256 = "639c9270c94b207f7ef72121c6cff63244f98886cad3f22deb43414e099eea81",
   downloaded_file_path = "apple-notary-api-kotlin-client-2.0.1-sources.jar"
-)
-
-http_file(
-  name = "aws-java-sdk-s3-1_12_431-sources_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.12.431/aws-java-sdk-s3-1.12.431-sources.jar",
-  sha256 = "b59a5f524a340a79a6f9e26679c8a2cb9452b6066b99f83a2647bd6888ded850",
-  downloaded_file_path = "aws-java-sdk-s3-1.12.431-sources.jar"
-)
-
-http_file(
-  name = "aws-java-sdk-kms-1_12_431-sources_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-kms/1.12.431/aws-java-sdk-kms-1.12.431-sources.jar",
-  sha256 = "d21f454d555388e5658af42c3e8c1118def09efc4de11cd23c7f0e826c903683",
-  downloaded_file_path = "aws-java-sdk-kms-1.12.431-sources.jar"
-)
-
-http_file(
-  name = "aws-java-sdk-core-1_12_431-sources_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.12.431/aws-java-sdk-core-1.12.431-sources.jar",
-  sha256 = "18f47e6c717ea4146a759f9034ba9bd20de3f55c12be38372c05428a07e3490b",
-  downloaded_file_path = "aws-java-sdk-core-1.12.431-sources.jar"
-)
-
-http_file(
-  name = "jmespath-java-1_12_431-sources_http",
-  url = "https://cache-redirector.jetbrains.com/repo1.maven.org/maven2/com/amazonaws/jmespath-java/1.12.431/jmespath-java-1.12.431-sources.jar",
-  sha256 = "f9aa3c3adae857766e10b811c442e806371d9859645e6628379495fcf560904e",
-  downloaded_file_path = "jmespath-java-1.12.431-sources.jar"
 )
 
 http_file(

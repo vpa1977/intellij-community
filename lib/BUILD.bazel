@@ -7570,10 +7570,6 @@ java_library(
   name = "platform-build_scripts-jetbrains-apple-notary-api-kotlin-client",
   exports = [
     ":apple-notary-api-kotlin-client-2_0_1_http_import",
-    ":aws-java-sdk-s3-1_12_431_http_import",
-    ":aws-java-sdk-kms-1_12_431_http_import",
-    ":aws-java-sdk-core-1_12_431_http_import",
-    ":jmespath-java-1_12_431_http_import",
     ":java-jwt-4_3_0_http_import",
   ],
   visibility = ["//visibility:public"]
@@ -7583,30 +7579,6 @@ kt_jvm_import(
   name = "apple-notary-api-kotlin-client-2_0_1_http_import",
   jar = "@apple-notary-api-kotlin-client-2_0_1_http//file",
   srcjar = "@apple-notary-api-kotlin-client-2_0_1-sources_http//file"
-)
-
-kt_jvm_import(
-  name = "aws-java-sdk-s3-1_12_431_http_import",
-  jar = "@aws-java-sdk-s3-1_12_431_http//file",
-  srcjar = "@aws-java-sdk-s3-1_12_431-sources_http//file"
-)
-
-kt_jvm_import(
-  name = "aws-java-sdk-kms-1_12_431_http_import",
-  jar = "@aws-java-sdk-kms-1_12_431_http//file",
-  srcjar = "@aws-java-sdk-kms-1_12_431-sources_http//file"
-)
-
-kt_jvm_import(
-  name = "aws-java-sdk-core-1_12_431_http_import",
-  jar = "@aws-java-sdk-core-1_12_431_http//file",
-  srcjar = "@aws-java-sdk-core-1_12_431-sources_http//file"
-)
-
-kt_jvm_import(
-  name = "jmespath-java-1_12_431_http_import",
-  jar = "@jmespath-java-1_12_431_http//file",
-  srcjar = "@jmespath-java-1_12_431-sources_http//file"
 )
 
 kt_jvm_import(
