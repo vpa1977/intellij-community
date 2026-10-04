@@ -13,7 +13,7 @@ jvm_library(
     "@lib//:jetbrains-annotations",
     "@lib//:fastutil-min",
     "@lib//:opentelemetry",
-    "@lib//:HdrHistogram",
+    "@lib//:hdr_histogram",
     "//platform/util",
   ]
 )

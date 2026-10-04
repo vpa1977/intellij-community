@@ -3,7 +3,7 @@ package org.jetbrains.intellij.build.telemetry
 
 import io.opentelemetry.api.trace.SpanBuilder
 import io.opentelemetry.api.trace.Tracer
-import io.opentelemetry.api.trace.TracerProvider
+import io.opentelemetry.api.OpenTelemetry
 import kotlinx.coroutines.runBlocking
 import java.nio.file.Path
 
@@ -11,7 +11,7 @@ import java.nio.file.Path
 fun withTracer(serviceName: String, traceFile: Path? = null, block: suspend () -> Unit): Unit = runBlocking { block() }
 
 object TraceManager {
-  private val tracer: Tracer = TracerProvider.noop().getTracer("build-script")
+  private val tracer: Tracer = OpenTelemetry.noop().getTracer("build-script")
 
   @Suppress("UNUSED_PARAMETER")
   fun setTracer(tracer: Tracer) {
