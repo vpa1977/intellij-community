@@ -36,7 +36,6 @@
             <dependency maven-id="io.github.resilience4j:resilience4j-circuitbreaker" />
             <dependency maven-id="io.github.resilience4j:resilience4j-micrometer" />
             <dependency maven-id="io.opentelemetry:opentelemetry-api" />
-            <dependency maven-id="io.opentelemetry:opentelemetry-semconv" />
             <dependency maven-id="io.grpc:grpc-netty-shaded" />
             <dependency maven-id="io.grpc:grpc-protobuf" />
             <dependency maven-id="io.grpc:grpc-stub" />

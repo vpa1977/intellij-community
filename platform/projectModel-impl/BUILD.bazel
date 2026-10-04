@@ -31,7 +31,6 @@ jvm_library(
     "@lib//:kryo5",
     "//platform/diagnostic/telemetry",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "@lib//:hash4j",
     "//platform/backend/workspace",
     "//platform/diagnostic",

@@ -32,7 +32,6 @@ jvm_library(
     "@lib//:kryo5",
     "@lib//:kotlinx-coroutines-core",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/diagnostic/telemetry",
   ],
   exports = ["//platform/workspace/storage"],

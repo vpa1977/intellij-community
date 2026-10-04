@@ -16,7 +16,6 @@ jvm_library(
     "@lib//:junit4",
     "@lib//:kotlin-stdlib",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/build-scripts/downloader:buildScripts-downloader",
     "//platform/util",
     "//platform/testFramework",

@@ -18,7 +18,6 @@ jvm_library(
     "@lib//:ktor-client-encoding",
     "@lib//:kotlinx-coroutines-core",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "@lib//:opentelemetry-extension-kotlin",
     "@lib//:ktor-client-okhttp",
     "@lib//:okhttp",

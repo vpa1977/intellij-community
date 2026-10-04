@@ -80,7 +80,6 @@ jvm_library(
     "//platform/util/zip",
     "@lib//:opentelemetry",
     "//platform/platform-impl/codeinsight-inline:ide-codeinsight-inline",
-    "@lib//:opentelemetry-semconv",
     "//platform/diagnostic/telemetry",
     "//platform/feedback",
     "@lib//:kotlinx-html-jvm",

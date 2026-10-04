@@ -37,7 +37,6 @@ jvm_library(
     "//platform/diagnostic/telemetry",
     "//platform/ide-core-impl",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/backend/workspace",
     "//platform/diagnostic",
     "//platform/backend/observation",

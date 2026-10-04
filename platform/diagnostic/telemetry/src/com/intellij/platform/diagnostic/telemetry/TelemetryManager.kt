@@ -5,7 +5,6 @@ package com.intellij.platform.diagnostic.telemetry
 
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.util.concurrency.SynchronizedClearableLazy
-import io.opentelemetry.api.GlobalOpenTelemetry
 import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.api.metrics.Meter
 import kotlinx.coroutines.CoroutineName
@@ -13,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.annotations.ApiStatus.Experimental
 import org.jetbrains.annotations.ApiStatus.Internal
 import org.jetbrains.annotations.TestOnly
-import java.util.*
+import java.util.ServiceLoader
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -60,11 +59,6 @@ interface TelemetryManager {
     fun forceSetTelemetryManager(value: TelemetryManager = NoopTelemetryManager()) {
       instance.value = value
     }
-
-    @TestOnly
-    fun resetGlobalSdk() {
-      GlobalOpenTelemetry.resetForTest()
-    }
   }
 
   var verboseMode: Boolean
@@ -82,8 +76,6 @@ interface TelemetryManager {
 
   fun getMeter(scope: Scope): Meter
 
-  fun addMetricsExporters(exporters: List<MetricsExporterEntry>)
-
   /**
    * Force collection of measurements and metrics flushing to appropriate files (.json for spans and .csv for meters).
    *
@@ -100,8 +92,8 @@ interface TelemetryManager {
   }
 
   /**
-   * Should reset all registered exporters [com.intellij.platform.diagnostic.telemetry.AsyncSpanExporter.reset].
-   * Meaning that spans and meters should be exported and discarded, so that resulting artifacts will not contain previously collected data.
+   * Resets any registered exporters.
+   * Spans and meters should be exported and discarded, so that resulting artifacts will not contain previously collected data.
    */
   @TestOnly
   suspend fun resetExporters()
@@ -114,7 +106,7 @@ interface TelemetryManager {
   }
 }
 
-private val instance = SynchronizedClearableLazy {
+private val instance = SynchronizedClearableLazy<TelemetryManager> {
   val log = logger<TelemetryManager>()
   // GlobalOpenTelemetry.set(sdk) can be invoked only once
   val instance = try {
@@ -152,10 +144,6 @@ class NoopTelemetryManager : TelemetryManager {
   override fun getSimpleTracer(scope: Scope) = NoopIntelliJTracer
 
   override fun getMeter(scope: Scope): Meter = OpenTelemetry.noop().getMeter(scope.toString())
-
-  override fun addMetricsExporters(exporters: List<MetricsExporterEntry>) {
-    logger<NoopTelemetryManager>().info("Noop telemetry manager is in use. No metrics exporters are defined.")
-  }
 
   override suspend fun forceFlushMetrics() {
     logger<NoopTelemetryManager>().info("Cannot force flushing metrics for Noop telemetry manager")

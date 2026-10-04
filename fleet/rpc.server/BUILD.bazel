@@ -16,7 +16,6 @@ jvm_library(
     "//fleet/multiplatform.shims:multiplatform-shims",
     "//fleet/util/core:fleet-util-core",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
   ]
 )
 ### auto-generated section `build fleet.rpc.server` end

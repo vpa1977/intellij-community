@@ -36,7 +36,6 @@ jvm_library(
     "//platform/util/jdom",
     "@lib//:hash4j",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/diagnostic/telemetry",
     "//platform/backend/workspace",
     "//platform/settings",

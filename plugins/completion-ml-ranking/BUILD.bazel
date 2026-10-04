@@ -31,7 +31,6 @@ jvm_library(
     "//platform/util/jdom",
     "//platform/ml-api:ml",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/diagnostic/telemetry",
     "//platform/platform-impl/internal:ide-internal",
     "//platform/lang-api:lang",

@@ -10,7 +10,6 @@ jvm_library(
     "//platform/build-scripts:buildScripts",
     "@lib//:kotlin-stdlib",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "@lib//:grpc-netty-shaded",
     "@lib//:grpc-core",
     "@lib//:grpc-protobuf",

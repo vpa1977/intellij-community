@@ -16,7 +16,6 @@ jvm_library(
     "//platform/util",
     "//jps/model-api:model",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/diagnostic/telemetry",
     "@lib//:kotlinx-collections-immutable",
     "@lib//:kotlinx-coroutines-core",

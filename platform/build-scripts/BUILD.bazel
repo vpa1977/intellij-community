@@ -24,7 +24,6 @@ jvm_library(
     "//jps/model-api:model",
     "//jps/standalone-builder:tools-jps-build-standalone",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "@lib//:kotlin-stdlib",
     "//aether-dependency-resolver:java-aetherDependencyResolver",
     "@lib//:jackson",

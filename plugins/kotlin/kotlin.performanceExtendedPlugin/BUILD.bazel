@@ -22,7 +22,6 @@ jvm_library(
     "@lib//:kotlinc-analysis-api-platform-interface-provided",
     "@lib//:kotlinc-analysis-api-provided",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//plugins/kotlin/base/frontend-agnostic:kotlin-base-frontend-agnostic",
     "//plugins/kotlin/kotlin.searching/base",
     "//java/java-analysis-impl:analysis-impl",

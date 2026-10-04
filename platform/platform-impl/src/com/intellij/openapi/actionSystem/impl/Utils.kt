@@ -59,7 +59,7 @@ import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.api.trace.Tracer
 import io.opentelemetry.context.Context
 import io.opentelemetry.context.ContextKey
-import io.opentelemetry.extension.kotlin.asContextElement
+import com.intellij.platform.diagnostic.telemetry.helpers.asContextElement
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest

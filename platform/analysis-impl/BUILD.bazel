@@ -33,7 +33,6 @@ jvm_library(
     "@lib//:stream_ex",
     "//platform/util/jdom",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/diagnostic/telemetry",
     "//platform/util/text-matching",
     "//platform/diagnostic",

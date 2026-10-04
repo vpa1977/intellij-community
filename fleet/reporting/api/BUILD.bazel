@@ -10,7 +10,6 @@ jvm_library(
     "@lib//:kotlin-stdlib",
     "@lib//:kotlinx-coroutines-core",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
   ]
 )
 ### auto-generated section `build fleet.reporting.api` end

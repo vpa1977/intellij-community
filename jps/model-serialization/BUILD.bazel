@@ -19,7 +19,6 @@ jvm_library(
     "@lib//:fastutil-min",
     "//platform/util/jdom",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
   ],
   runtime_deps = [":model-serialization_resources"]
 )

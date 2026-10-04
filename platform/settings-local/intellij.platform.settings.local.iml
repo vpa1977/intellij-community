@@ -45,7 +45,6 @@
     <orderEntry type="library" name="kotlinx-serialization-protobuf" level="project" />
     <orderEntry type="module" module-name="intellij.platform.diagnostic.telemetry" />
     <orderEntry type="library" name="opentelemetry" level="project" />
-    <orderEntry type="library" name="opentelemetry-semconv" level="project" />
     <orderEntry type="library" name="mvstore" level="project" />
     <orderEntry type="module-library">
       <library name="kotlinx-serialization-cbor" type="repository">

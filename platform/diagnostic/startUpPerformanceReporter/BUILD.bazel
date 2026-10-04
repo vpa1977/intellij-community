@@ -23,7 +23,6 @@ jvm_library(
     "//platform/util-class-loader:util-classLoader",
     "//platform/platform-util-io-impl:ide-util-io-impl",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/util",
     "@lib//:kotlinx-coroutines-core",
     "@lib//:kotlinx-serialization-core",

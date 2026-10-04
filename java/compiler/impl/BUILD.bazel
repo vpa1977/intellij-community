@@ -56,7 +56,6 @@ jvm_library(
     "@lib//:guava",
     "@lib//:caffeine",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "@lib//:kotlinx-collections-immutable",
     "@lib//:netty-codec-protobuf",
     "//platform/eel-provider",

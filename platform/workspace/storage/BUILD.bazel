@@ -33,7 +33,6 @@ jvm_library(
     "@lib//:kryo5",
     "//platform/diagnostic/telemetry",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "//platform/diagnostic",
     "@lib//:kotlinx-collections-immutable",
   ],

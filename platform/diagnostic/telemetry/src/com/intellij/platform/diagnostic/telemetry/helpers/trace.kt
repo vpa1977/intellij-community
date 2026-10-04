@@ -7,8 +7,9 @@ import io.opentelemetry.api.trace.Span
 import io.opentelemetry.api.trace.SpanBuilder
 import io.opentelemetry.api.trace.StatusCode
 import io.opentelemetry.context.Context
-import io.opentelemetry.extension.kotlin.asContextElement
+import io.opentelemetry.context.Scope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ThreadContextElement
 import kotlinx.coroutines.withContext
 import org.jetbrains.annotations.ApiStatus.Internal
 import java.util.concurrent.CancellationException
@@ -44,6 +45,23 @@ inline fun <T> Span.use(operation: (Span) -> T): T {
     }
   }
 }
+
+private class OpenTelemetryContextElement(
+  private val context: Context,
+) : ThreadContextElement<Scope> {
+  companion object Key : CoroutineContext.Key<OpenTelemetryContextElement>
+
+  override val key: CoroutineContext.Key<*> = Key
+
+  override fun updateThreadContext(context: CoroutineContext): Scope = this.context.makeCurrent()
+
+  override fun restoreThreadContext(context: CoroutineContext, oldState: Scope) {
+    oldState.close()
+  }
+}
+
+@Internal
+fun Context.asContextElement(): CoroutineContext.Element = OpenTelemetryContextElement(this)
 
 @Internal
 suspend inline fun <T> SpanBuilder.useWithScope(

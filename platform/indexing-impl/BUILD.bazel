@@ -19,7 +19,6 @@ jvm_library(
     "@lib//:hdr_histogram",
     "//platform/diagnostic/telemetry",
     "@lib//:opentelemetry",
-    "@lib//:opentelemetry-semconv",
     "@lib//:guava",
     "//platform/workspace/jps",
     "//platform/diagnostic",
