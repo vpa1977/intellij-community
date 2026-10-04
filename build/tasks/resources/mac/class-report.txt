@@ -1678,7 +1678,6 @@ com/intellij/ide/ui/IconMapLoader$doLoadIconMapping$1.class:lib/app-client.jar
 com/intellij/ide/ui/IconMapLoader$doLoadIconMapping$list$1.class:lib/app-client.jar
 com/fasterxml/jackson/core/Versioned.class:lib/lib-client.jar
 com/jetbrains/rd/platform/codeWithMe/settings/RdSettingsController.class:plugins/cwm-plugin/lib/cwm-common.jar
-com/intellij/platform/diagnostic/telemetry/OtlpConfiguration.class:lib/app-client.jar
 com/fasterxml/jackson/core/TokenStreamFactory.class:lib/lib-client.jar
 com/fasterxml/jackson/core/JsonFactory.class:lib/lib-client.jar
 com/jetbrains/rdserver/settings/BackendSettingsController.class:plugins/cwm-plugin/lib/cwm-host.jar
@@ -1722,7 +1721,6 @@ com/android/tools/adtui/webp/WebpImageReaderSpi.class:plugins/webp/lib/webp.jar
 io/opentelemetry/sdk/metrics/export/MetricExporter.class:lib/opentelemetry.jar
 com/fasterxml/jackson/core/async/ByteBufferFeeder.class:lib/lib-client.jar
 com/fasterxml/jackson/core/json/async/NonBlockingByteBufferJsonParser.class:lib/lib-client.jar
-com/intellij/platform/diagnostic/telemetry/AggregatedMetricExporter.class:lib/app-client.jar
 com/intellij/openapi/vfs/limits/FileSizeLimit.class:lib/util-8.jar
 com/intellij/platform/settings/local/LocalSettingsController.class:lib/modules/intellij.platform.settings.local.jar
 com/intellij/openapi/vfs/limits/FileSizeLimit$Companion.class:lib/util-8.jar
@@ -1731,7 +1729,6 @@ com/android/tools/adtui/webp/WebpImageReaderSpi$WebpReader.class:plugins/webp/li
 com/intellij/platform/settings/local/InternalAndCacheStorageManager.class:lib/modules/intellij.platform.settings.local.jar
 com/android/tools/adtui/webp/WebpNativeLibHelper.class:plugins/webp/lib/webp.jar
 com/jetbrains/TextInput$SelectTextRangeEvent.class:lib/util.jar
-com/intellij/platform/diagnostic/telemetry/AsyncSpanExporter.class:lib/app-client.jar
 com/intellij/openapi/extensions/ExtensionPointListener.class:lib/util.jar
 com/intellij/openapi/extensions/ExtensionPointAdapter.class:lib/util.jar
 com/intellij/openapi/extensions/impl/ExtensionPointImpl$doAddChangeListener$listenerAdapter$1.class:lib/util.jar
@@ -2061,20 +2058,17 @@ com/intellij/ide/ui/IconMapLoaderKt.class:lib/app-client.jar
 kotlin/reflect/jvm/internal/CachesKt$$Lambda$0.class:lib/util-8.jar
 kotlin/reflect/jvm/internal/CacheByClassKt.class:lib/util-8.jar
 com/fasterxml/jackson/core/JsonToken.class:lib/lib-client.jar
-com/intellij/platform/diagnostic/telemetry/OpenTelemetryUtils.class:lib/app-client.jar
 kotlinx/coroutines/debug/internal/ConcurrentWeakMap$Core.class:lib/util-8.jar
 kotlin/reflect/jvm/internal/CacheByClass.class:lib/util-8.jar
 kotlin/reflect/jvm/internal/ClassValueCache.class:lib/util-8.jar
 org/slf4j/jul/JULServiceProvider.class:lib/util-8.jar
 kotlin/reflect/jvm/internal/ComputableClassValue.class:lib/util-8.jar
-com/intellij/platform/diagnostic/telemetry/MetricsExporterEntry.class:lib/app-client.jar
 kotlin/reflect/jvm/internal/CachesKt$$Lambda$1.class:lib/util-8.jar
 com/intellij/ide/ui/IconMapLoaderKt$WhenMappings.class:lib/app-client.jar
 org/slf4j/jul/JDK14LoggerFactory.class:lib/util-8.jar
 kotlin/reflect/jvm/internal/CachesKt$$Lambda$2.class:lib/util-8.jar
 kotlinx/coroutines/debug/internal/DebugProbesImpl$DebugProbesImpl$VolatileWrapper$atomicfu$private.class:lib/util-8.jar
 kotlin/reflect/jvm/internal/CachesKt$$Lambda$3.class:lib/util-8.jar
-com/intellij/platform/diagnostic/telemetry/FilteredMetricsExporter.class:lib/app-client.jar
 kotlin/reflect/jvm/internal/CachesKt$$Lambda$4.class:lib/util-8.jar
 com/fasterxml/jackson/core/util/RecyclerPool$LockFreePoolBase$Node.class:lib/lib-client.jar
 kotlinx/coroutines/debug/internal/DebugProbesImpl$startWeakRefCleanerThread$1.class:lib/util-8.jar

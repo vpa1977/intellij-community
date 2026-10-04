@@ -1978,7 +1978,6 @@ com/intellij/util/indexing/FileBasedIndexLoader.class:lib/app-client.jar
 com/intellij/platform/settings/local/SettingsControllerMediator.class:lib/modules/intellij.platform.settings.local.jar
 com/intellij/openapi/extensions/PluginAware.class:lib/util.jar
 com/intellij/openapi/project/impl/P3SupportKt.class:lib/app-client.jar
-com/intellij/platform/diagnostic/telemetry/OtlpConfiguration.class:lib/app-client.jar
 com/intellij/openapi/extensions/impl/XmlExtensionAdapterKt.class:lib/util.jar
 com/intellij/platform/settings/ReadOnlySettingException.class:lib/app-client.jar
 io/opentelemetry/api/internal/ImmutableKeyValuePairs.class:lib/opentelemetry.jar
@@ -2010,7 +2009,6 @@ io/opentelemetry/api/internal/StringUtils.class:lib/opentelemetry.jar
 io/opentelemetry/sdk/metrics/export/AggregationTemporalitySelector.class:lib/opentelemetry.jar
 io/opentelemetry/sdk/metrics/export/DefaultAggregationSelector.class:lib/opentelemetry.jar
 io/opentelemetry/sdk/metrics/export/MetricExporter.class:lib/opentelemetry.jar
-com/intellij/platform/diagnostic/telemetry/AggregatedMetricExporter.class:lib/app-client.jar
 com/intellij/serviceContainer/LightServiceInstanceSupport$LightServiceInstanceInitializer.class:lib/app-client.jar
 com/intellij/platform/instanceContainer/internal/DynamicInstanceHolder.class:lib/app-client.jar
 com/intellij/serviceContainer/LightServiceInstanceSupport$LightServiceInstanceInitializer$createInstance$1.class:lib/app-client.jar
@@ -2018,7 +2016,6 @@ com/intellij/ide/plugins/PluginUtil.class:lib/util-8.jar
 com/intellij/openapi/components/PersistentStateComponent.class:lib/app-client.jar
 com/intellij/configurationStore/SettingsSavingComponent.class:lib/app-client.jar
 com/intellij/openapi/util/JDOMExternalizable.class:lib/util-8.jar
-com/intellij/platform/diagnostic/telemetry/AsyncSpanExporter.class:lib/app-client.jar
 com/intellij/ide/ui/IconMapLoader$preloadIconMapping$1.class:lib/app-client.jar
 com/intellij/ide/ui/IconMapperBean.class:lib/app-client.jar
 com/intellij/ide/ui/IconMapLoader$doLoadIconMapping$1.class:lib/app-client.jar
@@ -2328,10 +2325,8 @@ com/jetbrains/rhizomedb/Remove.class:lib/app-client.jar
 kotlin/jvm/internal/Reflection.class:lib/util-8.jar
 org/slf4j/jul/JULServiceProvider.class:lib/util-8.jar
 kotlin/jvm/internal/ReflectionFactory.class:lib/util-8.jar
-com/intellij/platform/diagnostic/telemetry/OpenTelemetryUtils.class:lib/app-client.jar
 kotlin/reflect/jvm/internal/ReflectionFactoryImpl.class:lib/util-8.jar
 com/fasterxml/jackson/core/StreamReadCapability.class:lib/lib-client.jar
-com/intellij/platform/diagnostic/telemetry/MetricsExporterEntry.class:lib/app-client.jar
 kotlin/reflect/KType.class:lib/util-8.jar
 org/slf4j/jul/JDK14LoggerFactory.class:lib/util-8.jar
 kotlin/reflect/KProperty.class:lib/util-8.jar

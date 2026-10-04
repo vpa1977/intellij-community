@@ -1652,7 +1652,6 @@ com/intellij/ide/ApplicationInitializedListener.class:lib/app-client.jar
 com/intellij/util/indexing/FileBasedIndexLoader.class:lib/app-client.jar
 com/intellij/platform/settings/ReadOnlySettingException.class:lib/app-client.jar
 com/android/tools/adtui/webp/WebpMetadata.class:plugins/webp/lib/webp.jar
-com/intellij/platform/diagnostic/telemetry/OtlpConfiguration.class:lib/app-client.jar
 com/android/tools/adtui/webp/WebpMetadata$Companion.class:plugins/webp/lib/webp.jar
 com/intellij/platform/settings/local/SettingsControllerMediatorKt.class:lib/modules/intellij.platform.settings.local.jar
 com/dynatrace/hash4j/hashing/AbstractHashStream.class:lib/lib-client.jar
@@ -1676,7 +1675,6 @@ io/opentelemetry/api/internal/StringUtils.class:lib/opentelemetry.jar
 io/opentelemetry/sdk/metrics/export/AggregationTemporalitySelector.class:lib/opentelemetry.jar
 io/opentelemetry/sdk/metrics/export/DefaultAggregationSelector.class:lib/opentelemetry.jar
 io/opentelemetry/sdk/metrics/export/MetricExporter.class:lib/opentelemetry.jar
-com/intellij/platform/diagnostic/telemetry/AggregatedMetricExporter.class:lib/app-client.jar
 com/intellij/openapi/vfs/limits/FileSizeLimit.class:lib/util-8.jar
 com/intellij/openapi/vfs/limits/FileSizeLimit$Companion.class:lib/util-8.jar
 kotlin/Metadata.class:lib/util-8.jar
@@ -1685,7 +1683,6 @@ kotlin/annotation/Target.class:lib/util-8.jar
 com/intellij/openapi/extensions/ExtensionPointListener.class:lib/util.jar
 com/intellij/openapi/extensions/ExtensionPointAdapter.class:lib/util.jar
 com/intellij/openapi/extensions/impl/ExtensionPointImpl$doAddChangeListener$listenerAdapter$1.class:lib/util.jar
-com/intellij/platform/diagnostic/telemetry/AsyncSpanExporter.class:lib/app-client.jar
 kotlinx/coroutines/sync/MutexKt.class:lib/util-8.jar
 kotlin/collections/Grouping.class:lib/util-8.jar
 com/intellij/openapi/vfs/limits/FileSizeLimit$Companion$getLimits$$inlined$groupingBy$1.class:lib/util-8.jar
@@ -2064,11 +2061,9 @@ com/fasterxml/jackson/core/exc/StreamReadException.class:lib/lib-client.jar
 com/fasterxml/jackson/core/exc/InputCoercionException.class:lib/lib-client.jar
 kotlin/reflect/jvm/internal/CachesKt.class:lib/util-8.jar
 com/fasterxml/jackson/core/JsonParseException.class:lib/lib-client.jar
-com/intellij/platform/diagnostic/telemetry/OpenTelemetryUtils.class:lib/app-client.jar
 kotlin/reflect/jvm/internal/CachesKt$$Lambda$0.class:lib/util-8.jar
 com/fasterxml/jackson/core/io/JsonEOFException.class:lib/lib-client.jar
 kotlin/reflect/jvm/internal/CacheByClassKt.class:lib/util-8.jar
-com/intellij/platform/diagnostic/telemetry/MetricsExporterEntry.class:lib/app-client.jar
 com/fasterxml/jackson/core/json/JsonReadContext.class:lib/lib-client.jar
 kotlin/reflect/jvm/internal/CacheByClass.class:lib/util-8.jar
 kotlin/reflect/jvm/internal/ClassValueCache.class:lib/util-8.jar
