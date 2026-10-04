@@ -180,36 +180,4 @@ jvm_import(
     visibility = ["//visibility:public"],
 )
 
-jvm_import(
-    name = "opentelemetry-exporter-logging-otlp",
-    jar = "@opentelemetry-exporter-logging-otlp//file",
-    source_jar = "@opentelemetry-exporter-logging-otlp-sources//file",
-    visibility = ["//visibility:public"],
-)
-
-jvm_import(
-    name = "opentelemetry-sdk-extension-autoconfigure-spi",
-    jar = "@opentelemetry-sdk-extension-autoconfigure-spi//file",
-    source_jar = "@opentelemetry-sdk-extension-autoconfigure-spi-sources//file",
-    visibility = ["//visibility:public"],
-)
-
-jvm_import(
-    name = "opentelemetry-exporter-otlp",
-    jar = "@opentelemetry-exporter-otlp//file",
-    source_jar = "@opentelemetry-exporter-otlp-sources//file",
-    visibility = ["//visibility:public"],
-    runtime_deps = [
-        ":opentelemetry-exporter-sender-jdk",
-        ":opentelemetry-sdk-extension-autoconfigure-spi"
-    ],
-)
-
-jvm_import(
-    name = "opentelemetry-exporter-sender-jdk",
-    jar = "@opentelemetry-exporter-sender-jdk//file",
-    source_jar = "@opentelemetry-exporter-sender-jdk-sources//file",
-    visibility = ["//visibility:public"],
-)
-
 ### auto-generated section `libraries` end

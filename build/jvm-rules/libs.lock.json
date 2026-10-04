@@ -7,22 +7,6 @@
     "442db5991a11974d72127353be7d7e7abdf8d943d83b16668cb2e336d7392f54",
     "6a755c09e0e5112a39c9e0910e07021d8700294666cd22c431fcf572acb4eb77"
   ],
-  "io.opentelemetry:opentelemetry-exporter-logging-otlp:1.47.0": [
-    "aa49634f2f46bd8fa13ec952c35a264295324aaedc1a585958529953861e9269",
-    "2ae0bff948fd5a1f4f4f47e83a50546fd8e335927e2e6576d173c9172045afde"
-  ],
-  "io.opentelemetry:opentelemetry-exporter-otlp:1.47.0": [
-    "0bf93192631d8d069f865707abf456432bb8fca316d5a7fd0ff5d1302414c651",
-    "aafc09eaaa3cf90a02f1c9670cb1c00ba73f86ed13e6ad91cc47efb1f3cabe62"
-  ],
-  "io.opentelemetry:opentelemetry-exporter-sender-jdk:1.47.0": [
-    "17c8e65e017e506ba520811009a37a64eceb2ceb0d15cd1d0e0cb074e54821cc",
-    "cf54580e7cc05a59cfbb14ecf673fdd82e2ed014717653434cb99cf093193450"
-  ],
-  "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:1.47.0": [
-    "94348d4263e2c59c7039630cad379d969b62644ed09b6178fa952988559b396a",
-    "e2eea857013276cb59d4b3ad6463901a8bce5cb324e071f6b3996d2f8e53a262"
-  ],
   "org.apache.arrow:arrow-algorithm:18.2.0": [
     "0c4089bde0ce62f00720d64dc0b7f08a6cb23e96c424ec7e061b4c4e6e4bba82",
     "c596851108722c8a5165e24d0fb8775fc5768305623f2b91d23e7b9b903055ec"
