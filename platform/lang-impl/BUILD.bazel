@@ -82,7 +82,6 @@ jvm_library(
     "//platform/platform-impl/codeinsight-inline:ide-codeinsight-inline",
     "@lib//:opentelemetry-semconv",
     "//platform/diagnostic/telemetry",
-    "//platform/diagnostic/telemetry-impl",
     "//platform/feedback",
     "@lib//:kotlinx-html-jvm",
     "//platform/util/text-matching",

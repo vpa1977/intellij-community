@@ -7,9 +7,6 @@
     <applicationService serviceInterface="com.intellij.remoteDev.downloader.JetBrainsClientDownloaderConfigurationProvider"
                         serviceImplementation="com.intellij.remoteDev.downloader.RealJetBrainsClientDownloaderConfigurationProvider"
                         testServiceImplementation="com.intellij.remoteDev.downloader.TestJetBrainsClientDownloaderConfigurationProvider"/>
-    <openTelemetryExporterProvider implementation="com.intellij.remoteDev.tracing.RdctExportersProvider"/>
-    <openTelemetryExporterProvider implementation="com.intellij.remoteDev.tracing.LuxExportersProvider"/>
-    <applicationInitializedListener implementation="com.intellij.remoteDev.tracing.CustomExportersListener"/>
     <registryKey key="rdct.use.embedded.client" defaultValue="true"
                  description="Enable to run JetBrains Client process from the current IDE instead of downloading it when connecting to an IDE of same version"/>
     <registryKey key="rdct.always.use.embedded.client" defaultValue="false"

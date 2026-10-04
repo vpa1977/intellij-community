@@ -3,7 +3,6 @@ package com.intellij.gradle.toolingExtension.impl.modelAction;
 
 import com.intellij.gradle.toolingExtension.impl.model.utilTurnOffDefaultTasksModel.TurnOffDefaultTasks;
 import com.intellij.gradle.toolingExtension.impl.modelSerialization.ToolingSerializerConverter;
-import com.intellij.gradle.toolingExtension.impl.telemetry.GradleOpenTelemetry;
 import com.intellij.gradle.toolingExtension.impl.util.GradleExecutorServiceUtil;
 import com.intellij.gradle.toolingExtension.modelAction.GradleModelFetchPhase;
 import com.intellij.gradle.toolingExtension.util.GradleVersionUtil;
@@ -26,7 +25,6 @@ import org.jetbrains.plugins.gradle.model.ProjectImportModelProvider.GradleModel
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
 
 /**
  * @author Vladislav.Soroka
@@ -89,37 +87,26 @@ public class GradleModelFetchAction implements BuildAction<GradleModelHolderStat
   public @NotNull GradleModelHolderState execute(@NotNull BuildController controller) {
     configureAdditionalTypes(controller);
     return GradleExecutorServiceUtil.withSingleThreadExecutor("idea-tooling-model-converter", converterExecutor -> {
-      return withOpenTelemetry(telemetry -> {
-        return telemetry.callWithSpan("ProjectImportAction", __ -> {
-          return doExecute(controller, converterExecutor, telemetry);
-        });
-      });
+      return doExecute(controller, converterExecutor);
     });
   }
 
   private @NotNull GradleModelHolderState doExecute(
     @NotNull BuildController controller,
-    @NotNull ExecutorService converterExecutor,
-    @NotNull GradleOpenTelemetry telemetry
+    @NotNull ExecutorService converterExecutor
   ) {
     myProjectLoadedAction = myModels == null && myUseProjectsLoadedPhase;
 
     if (myProjectLoadedAction || !myUseProjectsLoadedPhase) {
-      myModels = telemetry.callWithSpan("InitAction", __ ->
-        initAction(controller, converterExecutor, telemetry)
-      );
+      myModels = initAction(controller, converterExecutor);
     }
 
     assert myModels != null;
 
-    telemetry.runWithSpan("ExecuteAction", __ ->
-      executeAction(controller, converterExecutor, telemetry, myModels)
-    );
+    executeAction(controller, converterExecutor, myModels);
 
     if (myProjectLoadedAction) {
-      telemetry.runWithSpan("TurnOffDefaultTasks", __ ->
-        controller.getModel(TurnOffDefaultTasks.class)
-      );
+      controller.getModel(TurnOffDefaultTasks.class);
     }
 
     return myModels.pollPendingState();
@@ -148,24 +135,13 @@ public class GradleModelFetchAction implements BuildAction<GradleModelHolderStat
 
   private static @NotNull GradleDaemonModelHolder initAction(
     @NotNull BuildController controller,
-    @NotNull ExecutorService converterExecutor,
-    @NotNull GradleOpenTelemetry telemetry
+    @NotNull ExecutorService converterExecutor
   ) {
-    GradleBuild mainGradleBuild = telemetry.callWithSpan("GetMainGradleBuild", __ ->
-      controller.getBuildModel()
-    );
-    BuildEnvironment buildEnvironment = telemetry.callWithSpan("GetBuildEnvironment", __ ->
-      controller.getModel(BuildEnvironment.class)
-    );
-    Collection<? extends GradleBuild> nestedGradleBuilds = telemetry.callWithSpan("GetNestedGradleBuilds", __ ->
-      getNestedBuilds(buildEnvironment, mainGradleBuild)
-    );
-    ToolingSerializerConverter serializer = telemetry.callWithSpan("GetToolingModelConverter", __ ->
-      new ToolingSerializerConverter(controller, telemetry)
-    );
-    return telemetry.callWithSpan("InitModelConsumer", __ ->
-      new GradleDaemonModelHolder(converterExecutor, serializer, mainGradleBuild, nestedGradleBuilds, buildEnvironment)
-    );
+    GradleBuild mainGradleBuild = controller.getBuildModel();
+    BuildEnvironment buildEnvironment = controller.getModel(BuildEnvironment.class);
+    Collection<? extends GradleBuild> nestedGradleBuilds = getNestedBuilds(buildEnvironment, mainGradleBuild);
+    ToolingSerializerConverter serializer = new ToolingSerializerConverter(controller);
+    return new GradleDaemonModelHolder(converterExecutor, serializer, mainGradleBuild, nestedGradleBuilds, buildEnvironment);
   }
 
   private static Collection<? extends GradleBuild> getNestedBuilds(@NotNull BuildEnvironment buildEnvironment, @NotNull GradleBuild build) {
@@ -208,7 +184,6 @@ public class GradleModelFetchAction implements BuildAction<GradleModelHolderStat
   private void executeAction(
     @NotNull BuildController controller,
     @NotNull ExecutorService converterExecutor,
-    @NotNull GradleOpenTelemetry telemetry,
     @NotNull GradleDaemonModelHolder models
   ) {
     BuildController buildController = models.createBuildController(controller);
@@ -217,11 +192,9 @@ public class GradleModelFetchAction implements BuildAction<GradleModelHolderStat
 
     try {
       getModelFetchPhases().forEach(phase -> {
-        telemetry.runWithSpan(phase.name(), __ -> {
-          Set<ProjectImportModelProvider> modelProviders = myModelProviders.getOrDefault(phase, Collections.emptySet());
-          populateModels(buildController, telemetry, modelConsumer, gradleBuilds, modelProviders);
-          sendPendingState(buildController, telemetry, models, phase);
-        });
+        Set<ProjectImportModelProvider> modelProviders = myModelProviders.getOrDefault(phase, Collections.emptySet());
+        populateModels(buildController, modelConsumer, gradleBuilds, modelProviders);
+        sendPendingState(buildController, models, phase);
       });
     }
     catch (Exception e) {
@@ -231,32 +204,25 @@ public class GradleModelFetchAction implements BuildAction<GradleModelHolderStat
 
   private static void populateModels(
     @NotNull BuildController controller,
-    @NotNull GradleOpenTelemetry telemetry,
     @NotNull GradleModelConsumer modelConsumer,
     @NotNull Collection<? extends GradleBuild> gradleBuilds,
     @NotNull Collection<ProjectImportModelProvider> modelProviders
   ) {
     for (ProjectImportModelProvider modelProvider : modelProviders) {
-      telemetry.runWithSpan(modelProvider.getName(), __ -> {
-        modelProvider.populateModels(controller, gradleBuilds, modelConsumer);
-      });
+      modelProvider.populateModels(controller, gradleBuilds, modelConsumer);
     }
   }
 
   private void sendPendingState(
     @NotNull BuildController controller,
-    @NotNull GradleOpenTelemetry telemetry,
     @NotNull GradleDaemonModelHolder models,
     @NotNull GradleModelFetchPhase phase
   ) {
-    telemetry.runWithSpan("SendPendingState", span -> {
-      span.setAttribute("use-streamed-values", myUseStreamedValues);
-      if (myUseStreamedValues) {
-        GradleModelHolderState state = models.pollPendingState();
-        GradleModelHolderState phasedState = state.withPhase(phase);
-        controller.send(phasedState);
-      }
-    });
+    if (myUseStreamedValues) {
+      GradleModelHolderState state = models.pollPendingState();
+      GradleModelHolderState phasedState = state.withPhase(phase);
+      controller.send(phasedState);
+    }
   }
 
   private @NotNull SortedSet<GradleModelFetchPhase> getModelFetchPhases() {
@@ -281,18 +247,5 @@ public class GradleModelFetchAction implements BuildAction<GradleModelHolderStat
    */
   public @NotNull SortedSet<GradleModelFetchPhase> getBuildFinishedModelFetchPhases() {
     return myModelFetchPhases.tailSet(GradleModelFetchPhase.PROJECT_LOADED_PHASE, false);
-  }
-
-  private static @NotNull GradleModelHolderState withOpenTelemetry(
-    @NotNull Function<GradleOpenTelemetry, GradleModelHolderState> action
-  ) {
-    GradleOpenTelemetry telemetry = new GradleOpenTelemetry();
-    try {
-      return action.apply(telemetry);
-    }
-    catch (Throwable exception) {
-      telemetry.shutdown();
-      throw exception;
-    }
   }
 }

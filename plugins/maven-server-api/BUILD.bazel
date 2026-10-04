@@ -18,7 +18,6 @@ jvm_library(
     "//platform/util-rt",
     "//platform/util/jdom",
     "//plugins/maven-model",
-    "//platform/diagnostic/telemetry/rt:diagnostic-telemetry-rt",
   ],
   exports = [
     "@lib//:jetbrains-annotations",

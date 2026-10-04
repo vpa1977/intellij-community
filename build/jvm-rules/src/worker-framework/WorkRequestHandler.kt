@@ -11,14 +11,6 @@ import io.opentelemetry.api.common.Attributes
 import io.opentelemetry.api.trace.Span
 import io.opentelemetry.api.trace.Tracer
 import io.opentelemetry.context.Context
-import io.opentelemetry.exporter.logging.otlp.internal.traces.OtlpStdoutSpanExporter
-import io.opentelemetry.sdk.OpenTelemetrySdk
-import io.opentelemetry.sdk.common.export.MemoryMode
-import io.opentelemetry.sdk.resources.Resource
-import io.opentelemetry.sdk.trace.SdkTracerProvider
-import io.opentelemetry.sdk.trace.export.BatchSpanProcessor
-import io.opentelemetry.sdk.trace.samplers.Sampler
-import io.opentelemetry.semconv.ServiceAttributes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -50,35 +42,8 @@ fun interface WorkRequestExecutor<T : WorkRequest> {
 }
 
 @Suppress("SpellCheckingInspection")
-fun configureOpenTelemetry(@Suppress("unused") out: OutputStream, serviceName: String): Pair<OpenTelemetrySdk, () -> Unit> {
-  val spanExporter = OtlpStdoutSpanExporter.builder()
-    .setOutput(out)
-    .setMemoryMode(MemoryMode.REUSABLE_DATA)
-    .build()
-  //val spanExporter = OtlpHttpSpanExporter.builder()
-  //  .setMemoryMode(MemoryMode.REUSABLE_DATA)
-  //  .setEndpoint("https://jaeger-dev.labs.jb.gg/v1/traces")
-  //  .build()
-
-  val batchSpanProcessor = BatchSpanProcessor.builder(spanExporter)
-    .build()
-
-  val resource = Resource.create(
-    Attributes.of(ServiceAttributes.SERVICE_NAME, serviceName)
-  )
-  val tracerProvider = SdkTracerProvider.builder()
-    .setResource(resource)
-    .setSampler(Sampler.alwaysOn())
-    .addSpanProcessor(batchSpanProcessor)
-    .build()
-
-  val openTelemetrySdk = OpenTelemetrySdk.builder()
-    .setTracerProvider(tracerProvider)
-    .build()
-  return openTelemetrySdk to {
-    spanExporter.close()
-    batchSpanProcessor.close()
-  }
+fun configureOpenTelemetry(@Suppress("unused") out: OutputStream, serviceName: String): Pair<OpenTelemetry, () -> Unit> {
+  return OpenTelemetry.noop() to {}
 }
 
 private val noopTracer = OpenTelemetry.noop().getTracer("noop")

@@ -49,8 +49,6 @@ import com.intellij.openapi.updateSettings.impl.UpdateSettings
 import com.intellij.openapi.util.SystemInfoRt
 import com.intellij.openapi.util.SystemPropertyBean
 import com.intellij.openapi.util.io.OSAgnosticPathUtil
-import com.intellij.platform.diagnostic.telemetry.TelemetryManager
-import com.intellij.platform.diagnostic.telemetry.impl.TelemetryManagerImpl
 import com.intellij.platform.diagnostic.telemetry.impl.span
 import com.intellij.platform.ide.CoreUiCoroutineScopeHolder
 import com.intellij.platform.ide.ideFingerprint
@@ -131,19 +129,6 @@ internal suspend fun loadApp(
 
     initServiceContainerJob.join()
 
-    val initTelemetryJob = launch(CoroutineName("opentelemetry configuration")) {
-      try {
-        TelemetryManager.setTelemetryManager(
-          TelemetryManagerImpl(coroutineScope = app.getCoroutineScope(), isUnitTestMode = app.isUnitTestMode))
-      }
-      catch (e: CancellationException) {
-        throw e
-      }
-      catch (e: Throwable) {
-        logDeferred.await().error("Can't initialize OpenTelemetry: will use default (noop) SDK impl", e)
-      }
-    }
-
     app.getCoroutineScope().launch {
       // precompute after plugin model loaded
       ideFingerprint()
@@ -168,10 +153,6 @@ internal suspend fun loadApp(
 
     launch(CoroutineName("app pre-initialization")) {
       initConfigurationStoreJob.join()
-
-      span("telemetry waiting") {
-        initTelemetryJob.join()
-      }
 
       val preloadJob = launch(CoroutineName("critical services preloading")) {
         preloadCriticalServices(

@@ -15,9 +15,6 @@
 - name: lib/maven-server-indexer.jar
   modules:
   - name: intellij.maven.server.indexer
-- name: lib/maven-server-telemetry.jar
-  modules:
-  - name: intellij.maven.server.telemetry
 - name: lib/maven.jar
   modules:
   - name: intellij.idea.community.build.dependencies

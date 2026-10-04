@@ -16,9 +16,6 @@ final class EventWatcherService extends CompositeEventWatcher {
     if (EventWatcher.isEnabledDetailed) {
       watchers.add(new DetailedEventWatcher());
     }
-    if (EventWatcher.isEnabledAggregated) {
-      watchers.add(new OtelReportingEventWatcher());
-    }
     return watchers.toArray(EventWatcher[]::new);
   }
 }

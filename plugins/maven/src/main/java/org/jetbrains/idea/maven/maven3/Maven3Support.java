@@ -1,7 +1,6 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package org.jetbrains.idea.maven.maven3;
 
-import com.intellij.maven.server.telemetry.MavenServerTelemetryClasspathUtil;
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.util.io.NioFiles;
 import com.intellij.openapi.util.text.StringUtil;
@@ -81,15 +80,6 @@ public class Maven3Support implements MavenVersionAwareSupportExtension {
 
     Path rootPath = Path.of(root);
 
-    classpath.add(rootPath.resolve("maven-server-telemetry.jar"));
-    try {
-      classpath.add(Path.of(PathUtil.getJarPathForClass(Class.forName("io.opentelemetry.sdk.trace.export.SpanExporter"))));
-    }
-    catch (ClassNotFoundException e) {
-      MavenLog.LOG.error(e);
-    }
-    addDir(classpath, rootPath.resolve("maven-telemetry-lib"), f -> true);
-
     classpath.add(Path.of(root, "maven3-server-common.jar"));
     addDir(classpath, Path.of(root, "maven3-server-lib"), f -> true);
 
@@ -106,9 +96,6 @@ public class Maven3Support implements MavenVersionAwareSupportExtension {
 
     classpath.add(Path.of(PathUtil.getJarPathForClass(MavenId.class)));
     classpath.add(rootPath.resolve("intellij.maven.server"));
-
-    classpath.add(rootPath.resolve("intellij.maven.server.telemetry"));
-    classpath.addAll(MavenUtil.collectClasspath(MavenServerTelemetryClasspathUtil.TELEMETRY_CLASSES));
 
     Path parentFile = MavenUtil.getMavenPluginParentFile();
     classpath.add(rootPath.resolve("intellij.maven.server.m3.common"));
@@ -129,9 +116,6 @@ public class Maven3Support implements MavenVersionAwareSupportExtension {
 
     classpath.add(Path.of(PathUtil.getJarPathForClass(MavenId.class)));
     classpath.add(Path.of(mapping.get("production/intellij.maven.server")));
-
-    classpath.add(Path.of(mapping.get("production/intellij.maven.server.telemetry")));
-    classpath.addAll(MavenUtil.collectClasspath(MavenServerTelemetryClasspathUtil.TELEMETRY_CLASSES));
 
     Path parentPath = MavenUtil.getMavenPluginParentFile();
     classpath.add(Path.of(mapping.get("production/intellij.maven.server.m3.common")));

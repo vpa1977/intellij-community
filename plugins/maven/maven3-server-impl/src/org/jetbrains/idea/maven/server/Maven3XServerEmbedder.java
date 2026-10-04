@@ -1,7 +1,6 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package org.jetbrains.idea.maven.server;
 
-import com.intellij.maven.server.telemetry.MavenServerOpenTelemetry;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.util.io.FileUtilRt;
 import com.intellij.openapi.util.text.StringUtilRt;
@@ -530,7 +529,6 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
                                                                                              MavenToken token) {
     MavenServerUtil.checkToken(token);
     String longRunningTaskId = longRunningTaskInput.getLongRunningTaskId();
-    MavenServerOpenTelemetry telemetry = MavenServerOpenTelemetry.from(longRunningTaskInput.getTelemetryContext());
     @NotNull List<@NotNull File> filesToResolve = request.getFilesToResolve();
     PomHashMap pomHashMap = request.getPomHashMap();
     List<String> activeProfiles = request.getActiveProfiles();
@@ -539,12 +537,10 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
     boolean updateSnapshots = myAlwaysUpdateSnapshots || request.updateSnapshots();
     try (LongRunningTask task = newLongRunningTask(longRunningTaskId, pomHashMap.size(), myConsoleWrapper)) {
       Maven3XProjectResolver projectResolver =
-        createProjectResolver(filesToResolve, request, telemetry, updateSnapshots, task, pomHashMap, activeProfiles, inactiveProfiles, workspaceMap);
+        createProjectResolver(filesToResolve, request, updateSnapshots, task, pomHashMap, activeProfiles, inactiveProfiles, workspaceMap);
       try {
         customizeComponents(workspaceMap);
-        ArrayList<MavenServerExecutionResult> result = telemetry.callWithSpan(
-          "projectResolver.resolveProjects", () -> projectResolver.resolveProjects());
-        telemetry.shutdown();
+        ArrayList<MavenServerExecutionResult> result = projectResolver.resolveProjects();
         return new MavenServerResponse(result, getLongRunningTaskStatus(longRunningTaskId, token));
       }
       finally {
@@ -555,7 +551,6 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
 
   protected @NotNull Maven3XProjectResolver createProjectResolver(@NotNull List<@NotNull File> filesToResolve,
                                                                   @NotNull ProjectResolutionRequest request,
-                                                                  MavenServerOpenTelemetry telemetry,
                                                                   boolean updateSnapshots,
                                                                   LongRunningTask task,
                                                                   PomHashMap pomHashMap,
@@ -564,7 +559,6 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
                                                                   MavenWorkspaceMap workspaceMap) {
     Maven3XProjectResolver projectResolver = new Maven3XProjectResolver(
       this,
-      telemetry,
       updateSnapshots,
       myImporterSpy,
       task,
@@ -883,7 +877,6 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
                                                                                  MavenToken token) {
     MavenServerUtil.checkToken(token);
     String longRunningTaskId = longRunningTaskInput.getLongRunningTaskId();
-    MavenServerOpenTelemetry telemetry = MavenServerOpenTelemetry.from(longRunningTaskInput.getTelemetryContext());
     String mavenVersion = System.getProperty(MAVEN_EMBEDDER_VERSION);
     boolean runInParallel = canResolveDependenciesInParallel() && VersionComparatorUtil.compare(mavenVersion, "3.6.0") >= 0;
     try (LongRunningTask task = newLongRunningTask(longRunningTaskId, pluginResolutionRequests.size(), myConsoleWrapper)) {
@@ -921,7 +914,6 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
       List<PluginResolutionResponse> results = ParallelRunnerForServer.execute(runInParallel, resolutions, resolution ->
         resolvePlugin(task, resolution.mavenPluginId, resolution.resolveDependencies, resolution.dependencies, resolution.remoteRepos, session)
       );
-      telemetry.shutdown();
       return new MavenServerResponse<>(new ArrayList<>(results), getLongRunningTaskStatus(longRunningTaskId, token));
     }
   }
@@ -1055,10 +1047,8 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
                                                                                  MavenToken token) {
     MavenServerUtil.checkToken(token);
     String longRunningTaskId = longRunningTaskInput.getLongRunningTaskId();
-    MavenServerOpenTelemetry telemetry = MavenServerOpenTelemetry.from(longRunningTaskInput.getTelemetryContext());
     try (LongRunningTask task = newLongRunningTask(longRunningTaskId, requests.size(), myConsoleWrapper)) {
       ArrayList<MavenArtifact> artifacts = doResolveArtifacts(task, requests);
-      telemetry.shutdown();
       return new MavenServerResponse<>(artifacts, getLongRunningTaskStatus(longRunningTaskId, token));
     }
   }
@@ -1185,10 +1175,8 @@ public abstract class Maven3XServerEmbedder extends Maven3ServerEmbedder {
                                                                                        MavenToken token) {
     MavenServerUtil.checkToken(token);
     String longRunningTaskId = longRunningTaskInput.getLongRunningTaskId();
-    MavenServerOpenTelemetry telemetry = MavenServerOpenTelemetry.from(longRunningTaskInput.getTelemetryContext());
     try (LongRunningTask task = newLongRunningTask(longRunningTaskId, requests.size(), myConsoleWrapper)) {
       ArrayList<MavenGoalExecutionResult> results = executeGoal(task, requests, goal);
-      telemetry.shutdown();
       return new MavenServerResponse<>(results, getLongRunningTaskStatus(longRunningTaskId, token));
     }
   }

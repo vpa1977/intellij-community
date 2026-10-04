@@ -88,8 +88,6 @@ jvm_library(
     "//platform/backend/observation",
     "//platform/util/coroutines",
     "//platform/diagnostic/telemetry",
-    "//platform/diagnostic/telemetry-impl",
-    "//plugins/maven/maven-server-telemetry:server-telemetry",
     "@lib//:asm",
     "//platform/eel-provider",
     "//platform/ijent",

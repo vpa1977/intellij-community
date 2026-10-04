@@ -8,7 +8,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.NlsContexts
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.platform.diagnostic.telemetry.helpers.useWithScope
-import com.intellij.platform.diagnostic.telemetry.rt.context.TelemetryContext
 import com.intellij.platform.util.progress.RawProgressReporter
 import kotlinx.coroutines.*
 import org.jetbrains.annotations.ApiStatus
@@ -370,8 +369,8 @@ abstract class MavenEmbedderWrapper internal constructor(private val project: Pr
         withContext(Dispatchers.IO) {
           tracer.spanBuilder("runMavenExecution").useWithScope { span ->
             blockingContext {
-              val longRunningTaskInput = LongRunningTaskInput(longRunningTaskId, TelemetryContext.current())
-              val response = task.run(embedder, longRunningTaskInput)
+            val longRunningTaskInput = LongRunningTaskInput(longRunningTaskId)
+            val response = task.run(embedder, longRunningTaskInput)
               val status = response.status
               eventHandler.handleConsoleEvents(status.consoleEvents())
               eventHandler.handleDownloadEvents(status.downloadEvents())

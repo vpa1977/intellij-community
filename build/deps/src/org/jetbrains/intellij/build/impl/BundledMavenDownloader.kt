@@ -35,8 +35,6 @@ private val maven4Libs: List<String> = listOf(
   "org.jdom:jdom2:2.0.6.1",*/
 )
 
-private val mavenTelemetryDependencies = listOf("com.fasterxml.jackson.core:jackson-core:2.16.0")
-
 object BundledMavenDownloader {
   private val mutex = Mutex()
 
@@ -45,11 +43,9 @@ object BundledMavenDownloader {
     val communityRoot = BuildDependenciesManualRunOnly.communityRootFromWorkingDirectory
     runBlocking(Dispatchers.Default) {
       val distRoot = downloadMavenDistribution(communityRoot)
-      val mavenTelemetryDependencies = downloadMavenTelemetryDependencies(communityRoot)
       val maven3DownloadedLibs = downloadMaven3Libs(communityRoot)
       val maven4DownloadedLibs = downloadMaven4Libs(communityRoot)
       println("Maven distribution extracted at $distRoot")
-      println("Maven telemetry dependencies at $mavenTelemetryDependencies")
       println("Maven 3 libs at $maven3DownloadedLibs")
       println("Maven 4 libs at $maven4DownloadedLibs")
     }
@@ -166,9 +162,5 @@ object BundledMavenDownloader {
       BuildDependenciesDownloader.extractFile(zipPath, extractDir, communityRoot, BuildDependenciesExtractOptions.STRIP_ROOT)
     }
     return extractDir
-  }
-
-  suspend fun downloadMavenTelemetryDependencies(communityRoot: BuildDependenciesCommunityRoot): Path {
-    return downloadMavenLibs(communityRoot, "plugins/maven/maven-server-telemetry/lib", mavenTelemetryDependencies)
   }
 }

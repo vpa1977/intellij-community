@@ -52,7 +52,6 @@ jvm_library(
     "//platform/diagnostic/telemetry",
     "@lib//:opentelemetry",
     "@lib//:commons-lang3",
-    "//platform/diagnostic/telemetry-impl",
     "//platform/backend/workspace",
     "//platform/workspace/jps",
     "//platform/backend/observation",

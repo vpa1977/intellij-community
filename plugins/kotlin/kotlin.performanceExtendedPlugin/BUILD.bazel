@@ -30,7 +30,6 @@ jvm_library(
     "//plugins/kotlin/base/resources:kotlin-base-resources",
     "//plugins/kotlin/base/util:kotlin-base-util",
     "//platform/diagnostic/telemetry",
-    "//platform/diagnostic/telemetry-impl",
     "//plugins/kotlin/base/code-insight/minimal:kotlin-base-code-insight-minimal",
     "//plugins/kotlin/kotlin.ide:ide",
     "//platform/lang-impl",

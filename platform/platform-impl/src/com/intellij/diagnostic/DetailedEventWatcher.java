@@ -38,8 +38,8 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * Monitors {@linkplain com.intellij.openapi.application.impl.FlushQueue} and {@linkplain com.intellij.ide.IdeEventQueue},
- * and gathers stats about tasks/events processed. Contrary to {@linkplain OtelReportingEventWatcher} gathers more
- * detailed stats (i.e. groups timings by task/event class) but at higher runtime cost.
+ * and gathers stats about tasks/events processed. Gathers more detailed stats (i.e. groups timings by task/event class)
+ * but at higher runtime cost.
  */
 @ApiStatus.Experimental
 @ApiStatus.Internal

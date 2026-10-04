@@ -13,16 +13,12 @@ kt_jvm_library(
     deps = [
         "@lib//:kotlin-stdlib",
         "@lib//:opentelemetry",
-        "@lib//:opentelemetry-semconv",
-        "//:opentelemetry-exporter-logging-otlp",
-        "//:opentelemetry-exporter-otlp",
         "@lib//:kotlinx-coroutines-core",
         "//:protobuf-java",
         "@lib//:netty-buffer",
         "@lib//:jetbrains-annotations",
     ],
     runtime_deps = [
-        "@lib//:opentelemetry-exporter-otlp-common",
         "@lib//:jackson",
     ],
     visibility = ["//visibility:public"],

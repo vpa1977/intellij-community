@@ -26,7 +26,6 @@ jvm_library(
     "//platform/util/rt-java8",
     "@lib//:fastutil-min",
     "@lib//:hash4j",
-    "//platform/diagnostic/telemetry.exporters:telemetry-exporters",
     "//platform/util/coroutines",
     "//platform/util/zip",
     "@lib//:kotlinx-serialization-protobuf",

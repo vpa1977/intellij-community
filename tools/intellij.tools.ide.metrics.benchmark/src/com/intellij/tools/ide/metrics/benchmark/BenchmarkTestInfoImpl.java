@@ -77,32 +77,6 @@ public class BenchmarkTestInfoImpl implements BenchmarkTestInfo {
     // Open Telemetry file will be located at ../system/test/log/opentelemetry.json (alongside with open-telemetry-metrics.* files)
     System.setProperty("idea.diagnostic.opentelemetry.file",
                        PathManager.getLogDir().resolve("opentelemetry.json").toAbsolutePath().toString());
-
-    var telemetryInstance = TelemetryManager.getInstance();
-
-    // looks like telemetry manager is properly initialized
-    if (telemetryInstance.hasSpanExporters()) return;
-
-    System.err.printf(
-      "%nTelemetry instance will be overriden since span exporters aren't registered. " +
-      "This means your metrics (meters or spans), configured before any test execution will not be reported. " +
-      "Consider using TestApplication that will setup proper instance of telemetry.%n");
-
-    try {
-      TelemetryManager.Companion.resetGlobalSdk();
-      var telemetryClazz = Class.forName("com.intellij.platform.diagnostic.telemetry.impl.TelemetryManagerImpl");
-      var instance = Arrays.stream(telemetryClazz.getDeclaredConstructors())
-        .filter((it) -> it.getParameterCount() > 0).findFirst()
-        .get()
-        .newInstance(coroutineScope, true);
-
-      TelemetryManager.Companion.forceSetTelemetryManager((TelemetryManager)instance);
-    }
-    catch (Throwable e) {
-      System.err.println(
-        "Couldn't setup TelemetryManager without TestApplication. Either test should use TestApplication or somewhere is a bug");
-      e.printStackTrace();
-    }
   }
 
   private static void cleanupOutdatedMetrics() {

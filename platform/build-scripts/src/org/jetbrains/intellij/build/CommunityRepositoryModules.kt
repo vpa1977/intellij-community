@@ -90,7 +90,6 @@ object CommunityRepositoryModules {
       spec.withModule("intellij.maven.server.m3.impl", "maven3-server.jar")
       spec.withModule("intellij.maven.server.m36.impl", "maven36-server.jar")
       spec.withModule("intellij.maven.server.m40", "maven40-server.jar")
-      spec.withModule("intellij.maven.server.telemetry", "maven-server-telemetry.jar")
       spec.withModule("intellij.maven.errorProne.compiler")
       spec.withModule("intellij.maven.server.indexer", "maven-server-indexer.jar")
       spec.withModuleLibrary(libraryName = "apache.maven.core:3.8.3", moduleName = "intellij.maven.server.indexer",
@@ -124,9 +123,6 @@ object CommunityRepositoryModules {
 
         val maven3Libs = BundledMavenDownloader.downloadMaven3Libs(context.paths.communityHomeDirRoot)
         copyDir(maven3Libs, targetLib.resolve("maven3-server-lib"))
-
-        val mavenTelemetryDependencies = BundledMavenDownloader.downloadMavenTelemetryDependencies(context.paths.communityHomeDirRoot)
-        copyDir(mavenTelemetryDependencies, targetLib.resolve("maven-telemetry-lib"))
 
         val mavenDist = BundledMavenDownloader.downloadMavenDistribution(context.paths.communityHomeDirRoot)
         copyDir(mavenDist, targetLib.resolve("maven3"))

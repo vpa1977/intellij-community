@@ -2,7 +2,6 @@
 package org.jetbrains.intellij.build.logging
 
 import io.opentelemetry.api.trace.Span
-import io.opentelemetry.sdk.trace.ReadableSpan
 import jetbrains.buildServer.messages.serviceMessages.ServiceMessage
 import jetbrains.buildServer.messages.serviceMessages.ServiceMessageTypes
 import org.jetbrains.annotations.ApiStatus
@@ -48,21 +47,7 @@ class TeamCityBuildMessageLogger : BuildMessageLogger() {
      */
     @ApiStatus.Internal
     inline fun <T> withFlow(span: Span, operation: () -> T): T {
-      // the method is inlined - avoid using `operation` more than once
-      if (TeamCityHelper.isUnderTeamCity) {
-        val parentFlowId = (span as? ReadableSpan)?.parentSpanContext?.takeIf { it.isValid }?.spanId
-        val attributes = if (parentFlowId == null) java.util.Map.of() else java.util.Map.of("parent", parentFlowId)
-        println(SpanAwareServiceMessage(span = span, messageName = ServiceMessageTypes.FLOW_STARTED, attributes = attributes))
-      }
-
-      try {
-        return operation()
-      }
-      finally {
-        if (TeamCityHelper.isUnderTeamCity) {
-          println(SpanAwareServiceMessage(span = span, messageName = ServiceMessageTypes.FLOW_FINSIHED, attributes = java.util.Map.of()))
-        }
-      }
+      return operation()
     }
 
     /**
@@ -70,25 +55,8 @@ class TeamCityBuildMessageLogger : BuildMessageLogger() {
      */
     @ApiStatus.Internal
     suspend fun <T> withBlock(span: Span, operation: suspend () -> T): T {
-      if (!TeamCityHelper.isUnderTeamCity || span !is ReadableSpan) {
-        return operation()
-      }
-
-      val parentFlowId = span.parentSpanContext?.takeIf { it.isValid }?.spanId
-      val attributes = if (parentFlowId == null) {
-        java.util.Map.of("name", span.name)
-      }
-      else {
-        java.util.Map.of("name", span.name, "parent", parentFlowId)
-      }
-      println(SpanAwareServiceMessage(span = span, messageName = ServiceMessageTypes.BLOCK_OPENED, attributes = attributes))
-      try {
-        return operation()
-      }
-      finally {
-        println(SpanAwareServiceMessage(span = span, messageName = ServiceMessageTypes.BLOCK_CLOSED, attributes = attributes))
-        TraceManager.scheduleExportPendingSpans()
-      }
+      TraceManager.scheduleExportPendingSpans()
+      return operation()
     }
   }
 

@@ -16,8 +16,6 @@ import java.awt.*;
 public interface EventWatcher {
   /**
    * Enable lightweight aggregated monitoring for FlushQueue/EventQueue. Default: true
-   *
-   * @see com.intellij.diagnostic.OtelReportingEventWatcher
    */
   boolean isEnabledAggregated = SystemProperties.getBooleanProperty("idea.event.queue.dispatch.report-aggregated-stats-to-otel", true);
 

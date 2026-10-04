@@ -19,12 +19,6 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.registry.Registry.Companion.`is`
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.util.text.StringUtilRt
-import com.intellij.platform.diagnostic.telemetry.OtlpConfiguration.getTraceEndpointURI
-import com.intellij.platform.diagnostic.telemetry.impl.agent.AgentConfiguration.Companion.forService
-import com.intellij.platform.diagnostic.telemetry.impl.agent.AgentConfiguration.Settings.Companion.withoutMetrics
-import com.intellij.platform.diagnostic.telemetry.impl.agent.TelemetryAgentProvider.getJvmArgs
-import com.intellij.platform.diagnostic.telemetry.impl.agent.TelemetryAgentResolver.getAgentLocation
-import com.intellij.platform.diagnostic.telemetry.rt.context.TelemetryContext
 import com.intellij.util.PathUtil
 import org.jdom.Element
 import org.jetbrains.annotations.ApiStatus
@@ -164,10 +158,6 @@ open class MavenServerCMDState(
     //workaround for JDK-4716483
     params.vmParametersList.addProperty("sun.rmi.server.exceptionTrace", "true")
 
-    if (`is`("maven.server.opentelemetry.agent.enabled", false)) {
-      attachTelemetryAgent(params)
-    }
-
     setupMainExt(params)
     return params
   }
@@ -301,27 +291,6 @@ open class MavenServerCMDState(
           defs.put(key, value)
         }
       }
-    }
-
-    private fun attachTelemetryAgent(params: SimpleJavaParameters) {
-      val traceEndpoint = getTraceEndpointURI()
-      if (traceEndpoint == null) {
-        return
-      }
-      val agentLocation = getAgentLocation()
-      if (agentLocation == null) {
-        return
-      }
-      val configuration = forService(
-        "MavenServer",
-        TelemetryContext.current(),
-        traceEndpoint,
-        agentLocation,
-        withoutMetrics()
-      )
-      val args = getJvmArgs(configuration)
-      val parametersList = params.vmParametersList
-      parametersList.addAll(args)
     }
 
     @TestOnly

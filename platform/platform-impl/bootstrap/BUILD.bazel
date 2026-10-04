@@ -12,7 +12,7 @@ jvm_library(
     "//platform/platform-impl:ide-impl",
     "//platform/statistics",
     "//platform/service-container:serviceContainer",
-    "//platform/diagnostic/telemetry-impl",
+    "//platform/diagnostic",
     "//platform/util/zip",
     "//platform/analysis-api:analysis",
     "//platform/util:util-ui",

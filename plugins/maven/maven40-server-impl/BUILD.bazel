@@ -15,7 +15,6 @@ jvm_library(
   kotlinc_opts = "@community//:k8",
   deps = [
     "//plugins/maven-server-api:maven-server",
-    "//plugins/maven/maven-server-telemetry:server-telemetry",
     "//platform/util/jdom",
     "@lib//:maven-server-m40-org-apache-maven-maven-embedder-4-0-0-rc-2-provided",
     "@lib//:maven-server-m40-google-inject-guice-6-0-0-provided",

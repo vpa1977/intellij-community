@@ -20,7 +20,6 @@ jvm_library(
     "//platform/runtime/product",
     "//platform/diagnostic",
     "//platform/runtime/repository",
-    "//platform/diagnostic/telemetry-impl",
   ],
   runtime_deps = ["//platform/bootstrap/coroutine"]
 )

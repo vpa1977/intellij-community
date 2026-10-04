@@ -28,9 +28,7 @@ jvm_library(
     "@lib//:kotlinx-coroutines-core",
     "@lib//:kotlinx-serialization-core",
     "@lib//:kotlinx-serialization-protobuf",
-    "//platform/diagnostic/telemetry-impl",
     "//platform/diagnostic",
-    "//platform/diagnostic/telemetry",
   ]
 )
 ### auto-generated section `build intellij.platform.diagnostic.startUpPerformanceReporter` end

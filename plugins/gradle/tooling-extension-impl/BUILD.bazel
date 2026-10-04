@@ -33,7 +33,6 @@ jvm_library(
     "@lib//:slf4j-jdk14",
     "@lib//:opentelemetry",
     "@lib//:kotlin-stdlib",
-    "//platform/diagnostic/telemetry/rt:diagnostic-telemetry-rt",
   ],
   exports = [
     "@lib//:slf4j-api",

@@ -88,9 +88,6 @@ internal suspend fun buildSearchableOptions(
       launch(CoroutineName("download maven distribution")) {
         BundledMavenDownloader.downloadMavenDistribution(context.paths.communityHomeDirRoot)
       }
-      launch(CoroutineName("download maven telemetry dependencies")) {
-        BundledMavenDownloader.downloadMavenTelemetryDependencies(context.paths.communityHomeDirRoot)
-      }
     }
 
     // Start the product in headless mode using com.intellij.ide.ui.search.TraverseUIStarter.
