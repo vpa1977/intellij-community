@@ -31,18 +31,11 @@ open class IdeaCommunityProperties(private val communityHomeDir: Path) : BaseIde
       "intellij.platform.starter",
       "intellij.idea.community.customization",
     )
-    productLayout.bundledPluginModules = IDEA_BUNDLED_PLUGINS + sequenceOf(
-      "intellij.javaFX.community",
-      "intellij.vcs.github.community",
-      "intellij.vcs.gitlab.community"
-    )
+    productLayout.bundledPluginModules = persistentListOf()
 
     productLayout.prepareCustomPluginRepositoryForPublishedPlugins = false
     productLayout.buildAllCompatiblePlugins = false
-    productLayout.pluginLayouts = CommunityRepositoryModules.COMMUNITY_REPOSITORY_PLUGINS.addAll(listOf(
-      JavaPluginLayout.javaPlugin(),
-      CommunityRepositoryModules.groovyPlugin(),
-    ))
+    productLayout.pluginLayouts = persistentListOf()
 
     productLayout.addPlatformSpec { layout, _ ->
       layout.withModule("intellij.platform.duplicates.analysis")

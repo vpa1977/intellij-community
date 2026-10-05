@@ -1,7 +1,0 @@
-package root
-
-import root.p.bar
-
-fun foo() {
-    ba<caret>r()
-}

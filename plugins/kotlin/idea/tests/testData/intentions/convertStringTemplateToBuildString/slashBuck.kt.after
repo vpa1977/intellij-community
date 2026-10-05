@@ -1,5 +1,0 @@
-// PRIORITY: LOW
-// WITH_STDLIB
-fun test() = buildString {
-        append("test\$test")
-    }

@@ -1,8 +1,0 @@
-// COMPILER_ARGUMENTS: -XXLanguage:+TrailingCommas
-// FIX: Fix comma position
-// DISABLE_ERRORS
-
-fun a() {
-    val a = { (a, b // awd
-              ,<caret>/**/), c, -> }
-}

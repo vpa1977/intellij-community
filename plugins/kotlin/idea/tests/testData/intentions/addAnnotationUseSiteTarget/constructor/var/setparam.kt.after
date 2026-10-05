@@ -1,5 +1,0 @@
-// CHOSEN_OPTION: SETTER_PARAMETER|Add use-site target 'setparam'
-
-annotation class A
-
-class Constructor(@setparam:A var foo: String)

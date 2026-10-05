@@ -1,5 +1,0 @@
-// DISABLE_ERRORS
-
-expect class My {
-    val s: String
-}

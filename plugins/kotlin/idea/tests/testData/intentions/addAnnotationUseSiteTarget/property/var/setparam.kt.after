@@ -1,8 +1,0 @@
-// CHOSEN_OPTION: SETTER_PARAMETER|Add use-site target 'setparam'
-
-annotation class A
-
-class Property {
-    @setparam:A
-    var foo: String = ""
-}

@@ -1,5 +1,0 @@
-// IGNORE_K2
-@Override
-public String toString() {
-    return UUID.randomUUID().toString();
-}

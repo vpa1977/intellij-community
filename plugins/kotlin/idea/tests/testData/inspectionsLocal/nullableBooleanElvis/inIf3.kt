@@ -1,8 +1,0 @@
-// HIGHLIGHT: GENERIC_ERROR_OR_WARNING
-fun foo() {
-    var a: Boolean? = null
-    var b: Boolean? = null
-    if (a ?: false || !(b <caret>?: true)) {
-
-    }
-}

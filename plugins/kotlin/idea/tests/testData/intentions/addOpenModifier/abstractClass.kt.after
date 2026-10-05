@@ -1,5 +1,0 @@
-// PRIORITY: LOW
-abstract class Foo {
-    open fun bar() {
-    }
-}

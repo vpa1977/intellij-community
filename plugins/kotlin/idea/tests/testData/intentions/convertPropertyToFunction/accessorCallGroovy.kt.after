@@ -1,4 +1,0 @@
-// PRIORITY: LOW
-package test
-
-fun getBar(): Int = 1

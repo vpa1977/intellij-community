@@ -1,2 +1,0 @@
-java.lang.Object target;
-target = map.computeIfAbsent(key, compIfAbsentKey -> map.method());

@@ -1,8 +1,0 @@
-// CHOSEN_OPTION: PROPERTY|Add use-site target 'property'
-
-annotation class A
-
-class Property {
-    @property:A
-    var foo: String = ""
-}

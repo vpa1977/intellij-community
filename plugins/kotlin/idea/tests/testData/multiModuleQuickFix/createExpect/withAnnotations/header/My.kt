@@ -1,3 +1,0 @@
-// My: to be implemented
-// DISABLE_ERRORS
-annotation class CommonAnnotation

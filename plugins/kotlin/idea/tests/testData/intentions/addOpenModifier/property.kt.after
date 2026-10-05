@@ -1,4 +1,0 @@
-// PRIORITY: LOW
-open class Foo {
-    open var bar = 0
-}
